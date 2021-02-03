@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8677214846534135690}
   m_Layer: 0
   m_Name: Orange_Enemy_Bullet
-  m_TagString: Untagged
+  m_TagString: O_Enemy_Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -11,7 +11,7 @@ public class PlayerShoot : MonoBehaviour
     public GameObject orangeBulletPrefab;
     public GameObject pinkBulletPrefab;
 
-    public float bulletForce = 40f;
+    public float bulletForce = 20f;
 
     public GameObject player;
     public Animator anim;

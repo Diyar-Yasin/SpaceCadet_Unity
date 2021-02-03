@@ -24,11 +24,15 @@ public class BaseEnemyMove : MonoBehaviour
     {
         transform.position = Vector2.MoveTowards(transform.position, moveSpots[n].position, speed * Time.deltaTime);
 
-        if (Vector2.Distance(transform.position, moveSpots[0].position) < 0.2f)
+        if (Vector2.Distance(transform.position, moveSpots[moveSpots.Length - 1].position) < 0.2f)
+        {
+            Destroy(gameObject);
+        }
+        else if (Vector2.Distance(transform.position, moveSpots[n].position) < 0.2f)
         {
             if (waitTime <= 0)
             {
-                n = 1;
+                n++;
                 waitTime = startWaitTime;
             }
             else
@@ -37,9 +41,6 @@ public class BaseEnemyMove : MonoBehaviour
             }
         }
 
-        if (Vector2.Distance(transform.position, moveSpots[1].position) < 0.2f)
-        {
-            Destroy(gameObject);
-        }
+        
     }
 }
