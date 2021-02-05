@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class BaseEnemyShoot : MonoBehaviour
 {
-
-    public GameObject orangeBulletPrefab;
-    public GameObject pinkBulletPrefab;
-    private GameObject bulletColor;
+    private bool bulletIsOrange;
 
     // Start is called before the first frame update
     void Start()
@@ -16,56 +13,61 @@ public class BaseEnemyShoot : MonoBehaviour
         //   pass to Shoot(bulletColor).
         if (gameObject.tag == "O_Enemy")
         {
-            bulletColor = orangeBulletPrefab;
+            bulletIsOrange = true;
         }
         else
         {
-            bulletColor = pinkBulletPrefab;
+            bulletIsOrange = false;
         }
 
-        StartCoroutine(Shoot(bulletColor));
+        StartCoroutine(Shoot());
     }
 
-    IEnumerator Shoot(GameObject bulletColor)
+    IEnumerator Shoot()
     {
+        // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to initialize and create its objects before we call on it to grab bullets.
+        //   Not doing this leads to a NullReferenceException because the pooledObjects.Count does not yet exist in PinkEnemyBulletPooler.cs (the orange verison worked for some reason).
+        yield return new WaitForSeconds(0.5f);
+
         Quaternion bulletRotation = Quaternion.identity;
 
-        if (GameObject.ReferenceEquals(bulletColor, orangeBulletPrefab))
+        if (bulletIsOrange)
         {
-            GameObject bullet = OrangeEnemyBulletPooler.current.GetOrangeEnemyBullet();
+            GameObject oBullet = OrangeEnemyBulletPooler.current.GetOrangeEnemyBullet();
 
-            if (bullet == null)
+            if (oBullet == null)
             {
-                StartCoroutine(Shoot(bulletColor));
+                Debug.Log("Orange got a null!");
+                StartCoroutine(Shoot());
                 yield break;
             }
 
             // Set the positon and rotation of the bullet
-            bullet.transform.position = gameObject.transform.position;
-            bullet.transform.rotation = bulletRotation;
+            oBullet.transform.position = gameObject.transform.position;
+            oBullet.transform.rotation = bulletRotation;
 
             // Activate the bullet
-            bullet.SetActive(true);
+            oBullet.SetActive(true);
         }
         else
         {
-            GameObject bullet = PinkEnemyBulletPooler.current.GetPinkEnemyBullet();
+            GameObject pBullet = PinkEnemyBulletPooler.current.GetPinkEnemyBullet();
 
-            if (bullet == null)
+            if (pBullet == null)
             {
-                StartCoroutine(Shoot(bulletColor));
+                Debug.Log("Pink got a null!");
+                StartCoroutine(Shoot());
                 yield break;
             }
 
             // Set the positon and rotation of the bullet
-            bullet.transform.position = gameObject.transform.position;
-            bullet.transform.rotation = bulletRotation;
+            pBullet.transform.position = gameObject.transform.position;
+            pBullet.transform.rotation = bulletRotation;
 
             // Activate the bullet
-            bullet.SetActive(true);
+            pBullet.SetActive(true);
         }
         
-        yield return new WaitForSeconds(0.5f);
-        StartCoroutine(Shoot(bulletColor));
+        StartCoroutine(Shoot());
     }
 }

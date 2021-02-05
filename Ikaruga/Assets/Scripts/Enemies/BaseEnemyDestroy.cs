@@ -9,6 +9,8 @@ public class BaseEnemyDestroy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(health);
+
         if (other.tag == "O_Player_Bullet")
         {
             if (gameObject.tag == "O_Base_Enemy")

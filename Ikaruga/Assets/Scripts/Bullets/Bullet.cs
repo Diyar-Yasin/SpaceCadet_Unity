@@ -28,8 +28,8 @@ public class Bullet : MonoBehaviour
                     }
                     else
                     {
-                        // BULLET IS PINK, SO DESTROY BULLET AND TAKE DAMAGE
-                        Destroy(gameObject);
+                        // BULLET IS PINK, SO SET INACTIVE BULLET AND TAKE DAMAGE
+                        gameObject.SetActive(false);
                     }
                 }
                 else
@@ -45,10 +45,18 @@ public class Bullet : MonoBehaviour
                     }
                     else
                     {
-                        // BULLET IS ORANGE, SO DESTROY BULLET AND TAKE DAMAGE
-                        Destroy(gameObject);
+                        // BULLET IS ORANGE, SO SET INACTIVE BULLET AND TAKE DAMAGE
+                        gameObject.SetActive(false);
                     }
                 }
+            }
+        }
+        else if (gameObject.tag == "P_Player_Bullet" || gameObject.tag == "O_Player_Bullet")
+        {
+            // If the player's bullets hit the enemy we want to set those bullets to inactive
+            if (other.tag == "P_Enemy" || other.tag == "O_Enemy")
+            {
+                gameObject.SetActive(false);
             }
         }
     }
