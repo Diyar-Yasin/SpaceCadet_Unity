@@ -2,71 +2,61 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// BaseEnemyBulletController
+//              Bullets fired by Base Enemies can take on 1 of 3 path styles depending on
+//          where the bullet is on the game screen. This script controls the path the
+//          bullets follow as well as how they get disabled.
+//
+//          Note: Bullets on the left of the screen go right, bullets on the right of the
+//          screen go left, and bullets in the center go forward.
+//
+//          UNDER CONSTRUCTION: I plan to change the path of middle bullets to
+//          something somewhat more interesting in the future.
 public class BaseEnemyBulletController : MonoBehaviour
 {
-    public float bulletForce;
-    private Rigidbody2D rb;
+    // PUBLIC
+        // VARIABLES
+        public float bulletForce;
+        private Rigidbody2D rb;
 
-    private const int leftOfScreen = -10;
-    private const int rightOfScreen = 10;
+    // PRIVATE
+        // CONSTANTS
+        private const int leftOfScreen = -10;
+        private const int rightOfScreen = 10;
 
-    // Start is called before the first frame update
     void Start()
     {
-        // Get the bullet's Rigidbody
         rb = GetComponent<Rigidbody2D>();
 
-        // Add force to the bullets in certain directions depending on if they are to the left of the screen
-        //   to the right of the screen or in the middle of the screen.
         if (gameObject.transform.position.x <= leftOfScreen)
         {
-            // Shoot the bullets to the right if the ship is left
             rb.AddForce(Vector2.right * bulletForce, ForceMode2D.Impulse);
-
         }
         else if (gameObject.transform.position.x >= rightOfScreen)
         {
-            // Shoot the bullets to the left if the ship is right
             rb.AddForce(-Vector2.right * bulletForce, ForceMode2D.Impulse);
         }
         else
         {
             rb.AddForce(-Vector2.up * bulletForce, ForceMode2D.Impulse);
-
         }
-       /* else
-        {
-            // We must be in the middle so left and right
-            // In order to do this we will create an extra bullet
-            GameObject extraBullet = Instantiate(bulletColor, transform.position, bulletRotation);
-
-            Rigidbody2D extraRb = extraBullet.GetComponent<Rigidbody2D>();
-
-            extraRb.AddForce(-transform.right * bulletForce, ForceMode2D.Impulse);
-            rb.AddForce(transform.right * bulletForce, ForceMode2D.Impulse);
-
-        }*/
     }
 
     private void OnEnable()
     {
-        if (rb != null)
-        {
+        if (rb != null)                                                                                                // When we enable a bullet from the pool, it may be in a different position or have lost its
+        {                                                                                                              //   rb.AddForce so we redo what is in the start method to give the bullet direction.
             if (gameObject.transform.position.x <= leftOfScreen)
             {
-                // Shoot the bullets to the right if the ship is left
                 rb.AddForce(Vector2.right * bulletForce, ForceMode2D.Impulse);
-
             }
             else if (gameObject.transform.position.x >= rightOfScreen)
             {
-                // Shoot the bullets to the left if the ship is right
                 rb.AddForce(-Vector2.right * bulletForce, ForceMode2D.Impulse);
             }
             else
             {
                 rb.AddForce(-Vector2.up * bulletForce, ForceMode2D.Impulse);
-
             }
 
             Invoke("Disable", 2f);
@@ -78,7 +68,7 @@ public class BaseEnemyBulletController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnDisable()
+    private void OnDisable()                                                                                           // This is added to ensure nothing goes wonky when we try to disable a bullet.
     {
         CancelInvoke();
     }

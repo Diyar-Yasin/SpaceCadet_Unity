@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4357015866314029613}
   - component: {fileID: 6028366145086936339}
   - component: {fileID: 4089718770517950122}
-  - component: {fileID: 2896516337585908507}
   - component: {fileID: 5202404915619471873}
+  - component: {fileID: -4278489104659852238}
   m_Layer: 0
   m_Name: Pink_Bullet
   m_TagString: P_Player_Bullet
@@ -132,19 +132,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &2896516337585908507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8599309550149230468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b78c1f7510d4174468f00cb0a8116930, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxGravity: 35
 --- !u!114 &5202404915619471873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,6 +144,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a03ac8fd374e5b545a19bb033a40c0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint1: {fileID: 0}
-  firePoint2: {fileID: 0}
   bulletForce: 40
+--- !u!114 &-4278489104659852238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8599309550149230468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ccc76554df9c949a6a068c29d52283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

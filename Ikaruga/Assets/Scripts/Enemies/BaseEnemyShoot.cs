@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// BaseEnemyShoot
+//              
 public class BaseEnemyShoot : MonoBehaviour
 {
     private bool bulletIsOrange;
@@ -37,7 +39,6 @@ public class BaseEnemyShoot : MonoBehaviour
 
             if (oBullet == null)
             {
-                Debug.Log("Orange got a null!");
                 StartCoroutine(Shoot());
                 yield break;
             }
@@ -55,7 +56,6 @@ public class BaseEnemyShoot : MonoBehaviour
 
             if (pBullet == null)
             {
-                Debug.Log("Pink got a null!");
                 StartCoroutine(Shoot());
                 yield break;
             }

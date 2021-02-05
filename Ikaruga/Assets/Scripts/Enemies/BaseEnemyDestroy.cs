@@ -2,25 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// BaseEnemyDestroy
+//              This program handles the health and destruction of the BaseEnemy.
+//          
+//          UNDER CONSTRUCTION: I made add a pool system here so that I can reuse enemies
+//          as opposed to constantly having to instantiate and destroy enemies.
 public class BaseEnemyDestroy : MonoBehaviour
 {
-    public Animator anim;
-    private int health = 40;
+    // PUBLIC
+        // VARIABLES
+        public Animator anim;
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log(health);
+    // PRIVATE
+        // VARIABLES
+        private int health = 40;
 
-        if (other.tag == "O_Player_Bullet")
+    void OnTriggerEnter2D(Collider2D other)                                                                            // As soon as a BaseEnemy collides with something, we need to check if it collided with a player
+    {                                                                                                                  //   bullet. If it did then we decrease the health of the enemy. Player bullets with color opposite
+        if (other.tag == "O_Player_Bullet")                                                                            //   to the enemy's color deal double damage.
         {
             if (gameObject.tag == "O_Base_Enemy")
             {
-                // takes less dmg
                 health -= 1;
             }
             else
             {
-                // takes more dmg
                 health -= 2;
             }
         }
@@ -28,17 +34,15 @@ public class BaseEnemyDestroy : MonoBehaviour
         {
             if (gameObject.tag == "O_Base_Enemy")
             {
-                // takes more dmg
                 health -= 2;
             }
             else
             {
-                // take less dmg
                 health -= 1;
             }
         }
 
-        if (health <= 0)
+        if (health <= 0)                                                                                               // If the enemy's health drops to or below 0, we want to get rid of the enemy. We killed it!
         {
             Destroy(gameObject);
         }
