@@ -20,6 +20,7 @@ public class PlayerShoot : MonoBehaviour
 
     void Start()
     {
+
         StartCoroutine(Shoot());
     }
 
@@ -45,32 +46,73 @@ public class PlayerShoot : MonoBehaviour
     {
         Quaternion bulletRotation = Quaternion.identity;
 
-        // Create bullet1 and 2 game objects and put them into variables
         if (isPink)
         {
-            GameObject bullet1 = Instantiate(pinkBulletPrefab, firePoint1.position, bulletRotation);
-            GameObject bullet2 = Instantiate(pinkBulletPrefab, firePoint2.position, bulletRotation);
+            GameObject bullet1 = PinkPlayerBulletPooler.current.GetPinkPlayerBullet();
+            
+            if (bullet1 == null)
+            {
+                StartCoroutine(Shoot());
+                yield break;
+            }
 
-            // Give the bullets physics
-            Rigidbody2D rb1 = bullet1.GetComponent<Rigidbody2D>();
-            Rigidbody2D rb2 = bullet2.GetComponent<Rigidbody2D>();
+            // Set the positon and rotation of the bullet
+            bullet1.transform.position = firePoint1.position;
+            bullet1.transform.rotation = bulletRotation;
+            
+            // Activate the bullet
+            bullet1.SetActive(true);
+            
 
-            // Add force to the bullets
-            rb1.AddForce(firePoint1.up * bulletForce, ForceMode2D.Impulse);
-            rb2.AddForce(firePoint2.up * bulletForce, ForceMode2D.Impulse);
+            GameObject bullet2 = PinkPlayerBulletPooler.current.GetPinkPlayerBullet();
+
+            if (bullet2 == null)
+            {
+                StartCoroutine(Shoot());
+                yield break;
+            }
+
+            // Set the positon and rotation of the bullet
+            bullet2.transform.position = firePoint2.position;
+            bullet2.transform.rotation = bulletRotation;
+
+            // Activate the bullet
+            bullet2.SetActive(true);
         }
         else
         {
-            GameObject bullet1 = Instantiate(orangeBulletPrefab, firePoint1.position, bulletRotation);
-            GameObject bullet2 = Instantiate(orangeBulletPrefab, firePoint2.position, bulletRotation);
+            GameObject bullet1 = OrangePlayerBulletPooler.current.GetOrangePlayerBullet();
+            
 
-            // Give the bullets physics
-            Rigidbody2D rb1 = bullet1.GetComponent<Rigidbody2D>();
-            Rigidbody2D rb2 = bullet2.GetComponent<Rigidbody2D>();
+            if (bullet1 == null)
+            {
+                StartCoroutine(Shoot());
+                yield break;
+            }
 
-            // Add force to the bullets
-            rb1.AddForce(firePoint1.up * bulletForce, ForceMode2D.Impulse);
-            rb2.AddForce(firePoint2.up * bulletForce, ForceMode2D.Impulse);
+            // Set the positon and rotation of the bullet
+            bullet1.transform.position = firePoint1.position;
+            bullet1.transform.rotation = bulletRotation;
+            
+
+            // Activate the bullet
+            bullet1.SetActive(true);
+            
+
+            GameObject bullet2 = OrangePlayerBulletPooler.current.GetOrangePlayerBullet();
+
+            if (bullet2 == null)
+            {
+                StartCoroutine(Shoot());
+                yield break;
+            }
+
+            // Set the positon and rotation of the bullet
+            bullet2.transform.position = firePoint2.position;
+            bullet2.transform.rotation = bulletRotation;
+
+            // Activate the bullet
+            bullet2.SetActive(true);
         }
         
         yield return new WaitForSeconds(0.1f);

@@ -9,6 +9,8 @@ TagManager:
   - O_Enemy_Bullet
   - P_Enemy
   - O_Enemy
+  - P_Player_Bullet
+  - O_Player_Bullet
   layers:
   - Default
   - TransparentFX
