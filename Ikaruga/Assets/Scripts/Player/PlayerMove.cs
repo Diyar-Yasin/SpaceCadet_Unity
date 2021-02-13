@@ -2,25 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// PlayerMove
+//              This script controls the movement of the player.
 public class PlayerMove : MonoBehaviour
 {
-    public float speed = 5f;
+    // PUBLIC
+        // VARIABLES
+        public float speed = 5f;
+        public Rigidbody2D rb;
 
-    public Rigidbody2D rb;
+    // PRIVATE
+        // VARIABLES
+        Vector2 movement;
 
-    Vector2 movement;
-
-    // Update is called once per frame
     void Update()
     {
-        // Input is handled here
-        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.x = Input.GetAxisRaw("Horizontal");                                                                   // Input is handled here
         movement.y = Input.GetAxisRaw("Vertical");
     }
 
     void FixedUpdate()
     {
-        // Movement is handled here 
-        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);                                         // Movement is handled here 
     }
 }
