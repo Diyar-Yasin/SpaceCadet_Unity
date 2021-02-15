@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8677214846534135690}
   - component: {fileID: 8870022116202744071}
   - component: {fileID: 509129850574848657}
+  - component: {fileID: 407508737241352624}
   m_Layer: 0
   m_Name: Orange_Enemy_Bullet
   m_TagString: O_Enemy_Bullet
@@ -147,3 +148,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ccc76554df9c949a6a068c29d52283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxGravity: 80
+--- !u!114 &407508737241352624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5656398500564989829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1923b5929779ef4d9c02f26340aaa2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 8677214846534135690}

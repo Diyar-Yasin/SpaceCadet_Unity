@@ -9,6 +9,7 @@ public class PlayerShoot : MonoBehaviour
 {
     // PUBLIC
         // VARIABLES
+        public static PlayerShoot current;
         public Transform firePoint1;
         public Transform firePoint2;
         public GameObject orangeBulletPrefab;
@@ -21,6 +22,11 @@ public class PlayerShoot : MonoBehaviour
     void Start()
     {
         StartCoroutine(Shoot());
+    }
+
+    public bool IsPink()
+    {
+        return isPink;                                                                                                 // This is for Attractor.cs which needs to know the state of the player
     }
 
     void Update()
