@@ -11,10 +11,6 @@ public class PlayerShoot : MonoBehaviour
         // VARIABLES
         public Transform firePoint1;
         public Transform firePoint2;
-        public GameObject orangeBulletPrefab;
-        public GameObject pinkBulletPrefab;
-        public float bulletForce = 20f;
-        public GameObject player;
         public Animator anim;
         public bool isPink = false;
 
