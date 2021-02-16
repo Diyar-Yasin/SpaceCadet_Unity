@@ -16,7 +16,8 @@ public class Attractor : MonoBehaviour
 	// PRIVATE
 		// CONSTANTS
 		const float G = 66.74f;																	
-		const float absorptionRange = 2.5f;
+		const float absorptionRange = 5.0f;
+		const float consumeRange = 2.5f;
 
 	void FixedUpdate()
 	{
@@ -31,7 +32,7 @@ public class Attractor : MonoBehaviour
 		Vector3 direction = rb.position - playerRb.position;
 		float distance = direction.magnitude;
 
-		if (distance <= absorptionRange)                                                                               // We only want the bullets to be "absorbed" when they are close to the player
+		if (distance > absorptionRange)                                                                               // We only want the bullets to be "absorbed" when they are close to the player
 			return;
 
 		PlayerShoot playerShoot = player.GetComponent<PlayerShoot>();
@@ -41,6 +42,15 @@ public class Attractor : MonoBehaviour
 
 		if (!playerShoot.isPink && this.tag == "P_Enemy_Bullet")
 			return;
+
+		if (distance <= consumeRange)																				   // If it is close enough, we will add 1 score for the player and deactivate that bullet.
+        {
+			GameObject scoreText = GameObject.FindGameObjectWithTag("Score");
+			Score score = scoreText.GetComponent<Score>();
+			score.ScoreAdd_AbsorbedBullet();
+
+			gameObject.SetActive(false);
+		}
 
 		float forceMagnitude = G * (rb.mass * playerRb.mass) / Mathf.Pow(distance, 2);
 		Vector3 force = -direction.normalized * forceMagnitude;

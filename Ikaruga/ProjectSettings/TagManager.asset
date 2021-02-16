@@ -11,6 +11,7 @@ TagManager:
   - O_Enemy
   - P_Player_Bullet
   - O_Player_Bullet
+  - Score
   layers:
   - Default
   - TransparentFX

@@ -9,7 +9,6 @@ public class PlayerShoot : MonoBehaviour
 {
     // PUBLIC
         // VARIABLES
-        public static PlayerShoot current;
         public Transform firePoint1;
         public Transform firePoint2;
         public GameObject orangeBulletPrefab;

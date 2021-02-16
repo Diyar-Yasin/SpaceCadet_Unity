@@ -44,6 +44,10 @@ public class BaseEnemyDestroy : MonoBehaviour
 
         if (health <= 0)                                                                                               // If the enemy's health drops to or below 0, we want to get rid of the enemy. We killed it!
         {
+            GameObject scoreText = GameObject.FindGameObjectWithTag("Score");                                          // We add the score worth of killing a base enemy before removing the enemy.
+            Score score = scoreText.GetComponent<Score>();
+            score.ScoreAdd_DestroyedBaseEnemy();
+
             Destroy(gameObject);
         }
     }
