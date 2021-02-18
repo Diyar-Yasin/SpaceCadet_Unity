@@ -8,8 +8,10 @@ using UnityEngine;
 //          enemy from the base enemy.
 //
 //          CREDITS: https://www.youtube.com/watch?v=mKLp-2iseDc&ab_channel=KristerCederlund
+//          and      https://www.youtube.com/watch?v=4Wh22ynlLyk&ab_channel=PressStart
 //
-//          UNDER CONTRUCTION: Angles are not working properly yet
+//          UNDER CONTRUCTION: Replace destroy Diver with SetActive(false) after we add enemy
+//          pooling.
 public class DiverEnemyMove : MonoBehaviour
 {
     // PUBLIC
@@ -20,63 +22,51 @@ public class DiverEnemyMove : MonoBehaviour
         public Transform[] moveSpots;
 
     // PRIVATE
+        // CONSTANTS
+        private const int piOver2 = 90;
+
         // VARIABLES
+        private Transform player;
         private int currentWaypoint;
         private float waitTime;
         private Rigidbody2D rb;
         private bool isMoving;
+        private Animator anim;
 
     void Start()                                                                                                       // We always start at our first waypoint, 0.
     {
         isMoving = true;
-        rb = GetComponent<Rigidbody2D>();
+        player = GameObject.FindWithTag("Player").transform;
+        anim = this.GetComponent<Animator>();
+        rb = this.GetComponent<Rigidbody2D>();
         waitTime = startWaitTime;
         currentWaypoint = 0;
     }
 
     void Update()                                                                                                      // We constantly move the enemy towards the currentWaypoint by its speed * time
     {
-        if (isMoving)
+        if (anim == null)
         {
-/*            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            Vector3 targ = player.transform.position;
-            targ.z = 0f;
+            anim = this.GetComponent<Animator>();
+        }
+        if (isMoving)                                                                                                  // As long as we are in the isMoving state (the only other state is diving, where we want to freeze
+        {                                                                                                              //   the direction that the Diver will Dive in.
+            transform.position = Vector2.MoveTowards(transform.position,                                               // This block constantly ensures the Diver points at the player (signifying to the player that it is
+            moveSpots[currentWaypoint].position, speed * Time.deltaTime);                                              //   targeting them.
 
-            Vector3 diverPos = transform.position;
-            targ.x = targ.x - diverPos.x;
-            targ.y = targ.y - diverPos.y;
+            Vector3 direction = player.position - transform.position;
 
-            float angle = Mathf.Atan2(targ.y, targ.x) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + piOver2;                             // Note: We add Pi/2 to the angle to account for the original Diver sprite being oriented backwards.
+            rb.rotation = angle;
 
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-*/
-
-            transform.position = Vector2.MoveTowards(transform.position,
-            moveSpots[currentWaypoint].position, speed * Time.deltaTime);
-
-            if (Vector2.Distance(transform.position, moveSpots[moveSpots.Length - 1].position) < 0.2f)                     // Once the enemy reaches the last waypoint in the array (within 0.2 error range) we will,
-            {
-
-                GameObject player = GameObject.FindGameObjectWithTag("Player");
-                Vector3 targ = player.transform.position;
-                targ.z = 0f;
-
-                Vector3 diverPos = transform.position;
-                targ.x = targ.x - diverPos.x;
-                targ.y = targ.y - diverPos.y;
-
-                float angle = Mathf.Atan2(targ.y, targ.x) * Mathf.Rad2Deg;
-                Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, speed * Time.deltaTime);
-
-                StartCoroutine(Dive(targ.x, targ.y)); // point object at player location (only get it once, dont update, so it is dodgeable), play animation and add force in that direction 
-
-                //isMoving = false;
-            }
-            else if (Vector2.Distance(transform.position, moveSpots[currentWaypoint].position) < 0.2f)                     // Once the enemy reaches the next waypoint in the array (within 0.2 error range) we wait for the
-            {                                                                                                              //   preset waitTime. Then once we have waited the time, we set a new waypoint, reset the waitTime
-                if (waitTime <= 0)                                                                                         //   and continue moving to our next waypoint.
+            if (Vector2.Distance(transform.position, moveSpots[moveSpots.Length - 1].position) < 0.2f)                 // Once the enemy reaches the last waypoint in the array (within 0.2 error range) we will stop
+            {                                                                                                          //   re-pointing at the player and launch towards the last calculated direction in 1.5 seconds.
+                isMoving = false;
+                StartCoroutine(Dive(direction.x, direction.y));                                                        // Point object at player location (only get it once, dont update, so it is dodgeable), play 
+            }                                                                                                          //   animation and add force in that direction.
+            else if (Vector2.Distance(transform.position, moveSpots[currentWaypoint].position) < 0.2f)                 // Once the enemy reaches the next waypoint in the array (within 0.2 error range) we wait for the
+            {                                                                                                          //   preset waitTime. Then once we have waited the time, we set a new waypoint, reset the waitTime
+                if (waitTime <= 0)                                                                                     //   and continue moving to our next waypoint.
                 {
                     currentWaypoint++;
                     waitTime = startWaitTime;
@@ -86,16 +76,21 @@ public class DiverEnemyMove : MonoBehaviour
                     waitTime -= Time.deltaTime;
                 }
             }
-        }
-        
+        } 
     }
 
-    IEnumerator Dive(float xTarg, float yTarg)
-    {
-        
+    IEnumerator Dive(float xTarg, float yTarg)                                                                         // This IEnumerator waits 0.6 seconds, plays the Diving animation and then waits another 0.8 seconds
+    {                                                                                                                  //   before launching. Then waits 1 second before removing the object.
+        yield return new WaitForSeconds(0.6f);
 
-        yield return new WaitForSeconds(1.5f);
+        anim.SetBool("isDiving", true);
 
-        rb.AddForce((new Vector2(xTarg, yTarg)) * diveForce, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.8f);
+
+        rb.AddForce((new Vector2(xTarg, yTarg)).normalized * diveForce, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(1f);
+
+        //Destroy(gameObject);
     }
 }

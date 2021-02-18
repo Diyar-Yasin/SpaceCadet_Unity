@@ -5,7 +5,7 @@ using UnityEngine;
 // BaseEnemyDestroy
 //              This program handles the health and destruction of the BaseEnemy.
 //          
-//          UNDER CONSTRUCTION: I made add a pool system here so that I can reuse enemies
+//          UNDER CONSTRUCTION: I may add a pool system here so that I can reuse enemies
 //          as opposed to constantly having to instantiate and destroy enemies.
 public class BaseEnemyDestroy : MonoBehaviour
 {
@@ -21,7 +21,7 @@ public class BaseEnemyDestroy : MonoBehaviour
     {                                                                                                                  //   bullet. If it did then we decrease the health of the enemy. Player bullets with color opposite
         if (other.tag == "O_Player_Bullet")                                                                            //   to the enemy's color deal double damage.
         {
-            if (gameObject.tag == "O_Base_Enemy")
+            if (gameObject.tag == "O_Enemy")
             {
                 health -= 1;
             }
@@ -32,7 +32,7 @@ public class BaseEnemyDestroy : MonoBehaviour
         }
         else if (other.tag == "P_Player_Bullet")
         {
-            if (gameObject.tag == "O_Base_Enemy")
+            if (gameObject.tag == "O_Enemy")
             {
                 health -= 2;
             }

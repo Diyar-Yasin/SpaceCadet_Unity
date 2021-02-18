@@ -23,6 +23,7 @@ public class Score : MonoBehaviour
         // CONSTANTS
         private const int bulletWorth = 1;
         private const int baseEnemyWorth = 50;
+        private const int diverEnemyWorth = 75;
 
 
     public void ScoreAdd_AbsorbedBullet()
@@ -33,5 +34,10 @@ public class Score : MonoBehaviour
     public void ScoreAdd_DestroyedBaseEnemy()
     {
         scoreText.text = (int.Parse(scoreText.text) + baseEnemyWorth).ToString();
+    }
+
+    public void ScoreAdd_DestroyedDiverEnemy()
+    {
+        scoreText.text = (int.Parse(scoreText.text) + diverEnemyWorth).ToString();
     }
 }
