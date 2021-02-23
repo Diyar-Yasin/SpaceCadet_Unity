@@ -45,10 +45,6 @@ public class DiverEnemyMove : MonoBehaviour
 
     void Update()                                                                                                      // We constantly move the enemy towards the currentWaypoint by its speed * time
     {
-        if (anim == null)
-        {
-            anim = this.GetComponent<Animator>();
-        }
         if (isMoving)                                                                                                  // As long as we are in the isMoving state (the only other state is diving, where we want to freeze
         {                                                                                                              //   the direction that the Diver will Dive in.
             transform.position = Vector2.MoveTowards(transform.position,                                               // This block constantly ensures the Diver points at the player (signifying to the player that it is

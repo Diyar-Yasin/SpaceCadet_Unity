@@ -428,6 +428,7 @@ GameObject:
   - component: {fileID: 163524801}
   - component: {fileID: 163524800}
   - component: {fileID: 163524802}
+  - component: {fileID: 163524803}
   m_Layer: 0
   m_Name: P_Diver_Enemy
   m_TagString: P_Enemy
@@ -601,6 +602,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 163524796}
+--- !u!114 &163524803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 163524795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc7f61807c589343bb856b1120f46fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &175730590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1875,7 +1888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!60 &1671025338
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2271,6 +2284,7 @@ GameObject:
   - component: {fileID: 1956294197}
   - component: {fileID: 1956294196}
   - component: {fileID: 1956294198}
+  - component: {fileID: 1956294199}
   m_Layer: 0
   m_Name: O_Diver_Enemy
   m_TagString: O_Enemy
@@ -2444,6 +2458,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 1956294192}
+--- !u!114 &1956294199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956294191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc7f61807c589343bb856b1120f46fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2087230547
 GameObject:
   m_ObjectHideFlags: 0

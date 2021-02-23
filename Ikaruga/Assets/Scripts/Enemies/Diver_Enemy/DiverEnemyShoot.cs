@@ -12,9 +12,12 @@ public class DiverEnemyShoot : MonoBehaviour
     // PRIVATE
         // VARIABLES
         private bool bulletIsOrange;
+        private Animator anim;
 
     void Start()
     {
+        anim = this.GetComponent<Animator>();
+
         if (gameObject.tag == "O_Enemy")                                                                               // Checks the tag of the gameobject to determine if we need orange or pink bullets
         {
             bulletIsOrange = true;
@@ -29,39 +32,47 @@ public class DiverEnemyShoot : MonoBehaviour
 
     IEnumerator Shoot()
     {
-        yield return new WaitForSeconds(0.5f);                                                                         // We want the bullet pooler to have some time to initialize and create its objects before we call 
+        yield return new WaitForSeconds(0.2f);                                                                         // We want the bullet pooler to have some time to initialize and create its objects before we call 
                                                                                                                        //   on it to grab bullets. Not doing this leads to a NullReferenceException because the
         Quaternion bulletRotation = Quaternion.identity;                                                               //   the pooledObjects.Count does not yet exist in PinkEnemyBulletPooler.cs (the orange verison 
                                                                                                                        //   worked for some reason).
-        if (bulletIsOrange)
+
+        while (anim.GetCurrentAnimatorStateInfo(0).IsName("O_Diver_Enemy_Dive") ||                                        // We only want to shoot bullets while we are diving across the map.
+            anim.GetCurrentAnimatorStateInfo(0).IsName("P_Diver_Enemy_Dive"))               
         {
-            GameObject oBullet = OrangeEnemyBulletPooler.current.GetOrangeEnemyBullet();
-
-            if (oBullet == null)
+            if (bulletIsOrange)
             {
-                StartCoroutine(Shoot());
-                yield break;
+                GameObject oBullet = OrangeEnemyBulletPooler.current.GetOrangeEnemyBullet();
+
+                if (oBullet == null)
+                {
+                    StartCoroutine(Shoot());
+                    yield break;
+                }
+
+                oBullet.transform.position = gameObject.transform.position;                                                // Set the positon and rotation of the bullet
+                oBullet.transform.rotation = bulletRotation;
+                oBullet.GetComponent<EnemyBulletController>().SetEnemyType("diver");                                       // This will tell the bullet controller script how the bullet will move once shot
+
+                oBullet.SetActive(true);                                                                                   // Activate the bullet
             }
-
-            oBullet.transform.position = gameObject.transform.position;                                                // Set the positon and rotation of the bullet
-            oBullet.transform.rotation = bulletRotation;
-
-            oBullet.SetActive(true);                                                                                   // Activate the bullet
-        }
-        else
-        {
-            GameObject pBullet = PinkEnemyBulletPooler.current.GetPinkEnemyBullet();
-
-            if (pBullet == null)
+            else
             {
-                StartCoroutine(Shoot());
-                yield break;
+                GameObject pBullet = PinkEnemyBulletPooler.current.GetPinkEnemyBullet();
+
+                if (pBullet == null)
+                {
+                    StartCoroutine(Shoot());
+                    yield break;
+                }
+
+                pBullet.transform.position = gameObject.transform.position;                                                // Set the positon and rotation of the bullet
+                pBullet.transform.rotation = bulletRotation;
+
+                pBullet.GetComponent<EnemyBulletController>().SetEnemyType("diver");                                       // This will tell the bullet controller script how the bullet will move once shot
+                pBullet.SetActive(true);                                                                                   // Activate the bullet
+
             }
-
-            pBullet.transform.position = gameObject.transform.position;                                                // Set the positon and rotation of the bullet
-            pBullet.transform.rotation = bulletRotation;
-
-            pBullet.SetActive(true);                                                                                   // Activate the bullet
         }
 
         StartCoroutine(Shoot());

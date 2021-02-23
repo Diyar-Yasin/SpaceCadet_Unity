@@ -42,7 +42,8 @@ public class BaseEnemyShoot : MonoBehaviour
             }
 
             oBullet.transform.position = gameObject.transform.position;                                                // Set the positon and rotation of the bullet
-            oBullet.transform.rotation = bulletRotation;                                                               
+            oBullet.transform.rotation = bulletRotation;
+            oBullet.GetComponent<EnemyBulletController>().SetEnemyType("base");                                        // This will tell the bullet controller script how the bullet will move once shot
 
             oBullet.SetActive(true);                                                                                   // Activate the bullet
         }
@@ -58,6 +59,7 @@ public class BaseEnemyShoot : MonoBehaviour
 
             pBullet.transform.position = gameObject.transform.position;                                                // Set the positon and rotation of the bullet
             pBullet.transform.rotation = bulletRotation;
+            pBullet.GetComponent<EnemyBulletController>().SetEnemyType("base");                                        // This will tell the bullet controller script how the bullet will move once shot
 
             pBullet.SetActive(true);                                                                                   // Activate the bullet
         }
