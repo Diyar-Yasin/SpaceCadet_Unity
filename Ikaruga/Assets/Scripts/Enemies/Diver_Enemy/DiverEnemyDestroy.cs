@@ -14,6 +14,9 @@ public class DiverEnemyDestroy : MonoBehaviour
         public Animator anim;
 
     // PRIVATE
+        // CONSTANTS
+        private const int diverEnemyWorth = 75;
+
         // VARIABLES
         private int health = 10;
 
@@ -47,6 +50,8 @@ public class DiverEnemyDestroy : MonoBehaviour
             GameObject scoreText = GameObject.FindGameObjectWithTag("Score");                                          // We add the score worth of killing a diver enemy before removing the enemy.
             Score score = scoreText.GetComponent<Score>();
             score.ScoreAdd_DestroyedDiverEnemy();
+
+            PointsPopup.Create(transform.position, diverEnemyWorth);
 
             Destroy(gameObject);
         }

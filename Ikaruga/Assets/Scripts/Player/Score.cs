@@ -34,10 +34,12 @@ public class Score : MonoBehaviour
     public void ScoreAdd_DestroyedBaseEnemy()
     {
         scoreText.text = (int.Parse(scoreText.text) + baseEnemyWorth).ToString();
+        //PointsPopup.Create(Vector3.zero, baseEnemyWorth);
     }
 
     public void ScoreAdd_DestroyedDiverEnemy()
     {
         scoreText.text = (int.Parse(scoreText.text) + diverEnemyWorth).ToString();
+        //PointsPopup.Create(Vector3.zero, diverEnemyWorth);
     }
 }

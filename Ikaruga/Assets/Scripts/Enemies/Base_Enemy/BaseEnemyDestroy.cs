@@ -14,6 +14,9 @@ public class BaseEnemyDestroy : MonoBehaviour
         public Animator anim;
 
     // PRIVATE
+        // CONSTANTS
+        private const int baseEnemyWorth = 50;
+
         // VARIABLES
         private int health = 40;
 
@@ -48,7 +51,9 @@ public class BaseEnemyDestroy : MonoBehaviour
             Score score = scoreText.GetComponent<Score>();
             score.ScoreAdd_DestroyedBaseEnemy();
 
-            Destroy(gameObject);
+            PointsPopup.Create(transform.position, baseEnemyWorth);
+
+            gameObject.SetActive(false);
         }
     }
 }

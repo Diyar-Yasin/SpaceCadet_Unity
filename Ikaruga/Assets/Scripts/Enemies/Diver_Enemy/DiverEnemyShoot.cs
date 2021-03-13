@@ -40,6 +40,8 @@ public class DiverEnemyShoot : MonoBehaviour
         while (anim.GetCurrentAnimatorStateInfo(0).IsName("O_Diver_Enemy_Dive") ||                                        // We only want to shoot bullets while we are diving across the map.
             anim.GetCurrentAnimatorStateInfo(0).IsName("P_Diver_Enemy_Dive"))               
         {
+            yield return new WaitForSeconds(0.2f);                                                                     // Not having this leads to the over-instantiation of bullets that freezes the game up.
+
             if (bulletIsOrange)
             {
                 GameObject oBullet = OrangeEnemyBulletPooler.current.GetOrangeEnemyBullet();
