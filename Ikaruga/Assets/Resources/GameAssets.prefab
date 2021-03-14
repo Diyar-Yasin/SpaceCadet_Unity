@@ -45,3 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointsPopup: {fileID: 4745680854702049117, guid: 13a1edc0456d5a14f8868fa225cc33a5,
     type: 3}
+  bulletShot: {fileID: 8300000, guid: f0b1d86c57a523a44b7fa5c9fc630024, type: 3}

@@ -25,4 +25,6 @@ public class GameAssets : MonoBehaviour
     }
 
     public Transform pointsPopup;
+
+    public AudioClip bulletShot;
 }

@@ -17,9 +17,13 @@ public class BulletController : MonoBehaviour
     // PRIVATE
         // VARIABLES
         private Rigidbody2D rb;
+        private AudioSource bulletShot;
 
     void Start()
     {
+        bulletShot = GetComponent<AudioSource>();
+        bulletShot.clip = GameAssets.i.bulletShot;
+
         rb = GetComponent<Rigidbody2D>();                                                                              // We always start by getting the rigidbody attached to the bullet and then adding the initial
                                                                                                                        //   force upwards.
         rb.AddForce(Vector2.up * bulletForce, ForceMode2D.Impulse);
@@ -31,8 +35,15 @@ public class BulletController : MonoBehaviour
         {                                                                                                              //   instantiation. So if that is the case we add that.
             rb.AddForce(Vector2.up * bulletForce, ForceMode2D.Impulse);
         }
+        if (bulletShot == null)
+        {
+            bulletShot = GetComponent<AudioSource>();
+            bulletShot.clip = GameAssets.i.bulletShot;
+        }
 
-        Invoke("Disable", 2f);                                                                                             
+        bulletShot.Play();
+
+        Invoke("Disable", 1f);                                                                                             
     }
 
     private void Disable()

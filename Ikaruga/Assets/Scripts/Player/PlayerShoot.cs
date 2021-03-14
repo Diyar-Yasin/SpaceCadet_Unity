@@ -103,7 +103,7 @@ public class PlayerShoot : MonoBehaviour
 
             bullet2.SetActive(true);                                                                                   // Activate the bullet
         }
-        
+
         yield return new WaitForSeconds(0.1f);                                                                         // Delays each shot by a small amount to simulate machine gun speed shooting
         StartCoroutine(Shoot());
     }
