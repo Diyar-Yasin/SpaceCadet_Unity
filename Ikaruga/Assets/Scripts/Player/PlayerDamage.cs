@@ -37,7 +37,6 @@ public class PlayerDamage : MonoBehaviour
         rend.enabled = true;
         invincible = false;
         invisible = false;
-
     }
 
     void OnTriggerEnter2D(Collider2D other)                                                                            // Every time the player collides with game objects we need to check if we hit an enemy bullet so
@@ -98,7 +97,10 @@ public class PlayerDamage : MonoBehaviour
         }
         else
         {
-            Debug.Log("NO LIVES LEFT");
+            anim.SetBool("No_Lives_Left", true);
+
+            yield return new WaitForSeconds(4 * invincibilityTime);
+
             Destroy(gameObject);
         }
     }

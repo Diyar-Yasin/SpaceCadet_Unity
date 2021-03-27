@@ -27,7 +27,11 @@ public class Attractor : MonoBehaviour
 	void Attract()
 	{
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
-		Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+
+		// In case the player is destroyed and we are calling this script, we do not want a null reference exception
+		if (player) 
+		{
+Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
 
 		Vector3 direction = rb.position - playerRb.position;
 		float distance = direction.magnitude;
@@ -56,6 +60,8 @@ public class Attractor : MonoBehaviour
 		Vector3 force = -direction.normalized * forceMagnitude;
 
 		this.rb.AddForce(force);																					   // We only add this force of gravitation to the bullet.
+		}
+		
 	}
 
 }
