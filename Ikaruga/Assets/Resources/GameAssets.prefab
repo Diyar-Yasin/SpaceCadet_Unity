@@ -48,9 +48,12 @@ MonoBehaviour:
   bulletShot: {fileID: 8300000, guid: f0b1d86c57a523a44b7fa5c9fc630024, type: 3}
   pBaseEnemy: {fileID: 1384098575419272677, guid: 96733789effa67746824f5274d1a61d2,
     type: 3}
-  oBaseEnemy: {fileID: 3887222661549740655, guid: a10ddf02ba465714da7107e71a6938b1,
+  oBaseEnemy: {fileID: 9063945410778737736, guid: 6e49768e54f609f4ebe22bc0a0ddeb0e,
     type: 3}
   pDiverEnemy: {fileID: 1390957227914548688, guid: a3931c1e72e35504fa1e4370e65bb319,
     type: 3}
   oDiverEnemy: {fileID: 7839361480461584800, guid: d6333f3a94977794a85577e62d81c6c5,
     type: 3}
+  base1Move: {fileID: 0}
+  base2Move: {fileID: 0}
+  base3Move: {fileID: 0}

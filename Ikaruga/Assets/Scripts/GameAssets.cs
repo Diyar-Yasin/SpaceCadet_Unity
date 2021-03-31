@@ -32,8 +32,4 @@ public class GameAssets : MonoBehaviour
     public GameObject oBaseEnemy;
     public GameObject pDiverEnemy;
     public GameObject oDiverEnemy;
-
-    public Transform base1Move;
-    public Transform base2Move;
-    public Transform base3Move;
 }

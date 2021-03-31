@@ -46,6 +46,11 @@ public class BulletController : MonoBehaviour
         Invoke("Disable", 1f);                                                                                             
     }
 
+    private void OnBecameInvisible() 
+    {
+        Disable();
+    }
+
     private void Disable()
     {
         gameObject.SetActive(false);

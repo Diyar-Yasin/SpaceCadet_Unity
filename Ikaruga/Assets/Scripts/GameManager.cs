@@ -92,8 +92,8 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.8f);
 
-        //EnemySpawn(spawnPt1, true, "diver");
-        //EnemySpawn(spawnPt5, false, "diver");
+        EnemySpawn(spawnPt1, true, "diver");
+        EnemySpawn(spawnPt5, false, "diver");
 
         yield return new WaitForSeconds(3f);
 
