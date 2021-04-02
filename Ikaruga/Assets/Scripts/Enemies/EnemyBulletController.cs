@@ -38,6 +38,7 @@ public class EnemyBulletController : MonoBehaviour
         // VARIABLES
         private Rigidbody2D rb;
         private string enemyType;
+        private int counter;
 
     void Start()                                                                                                       // At the start we always give a bullet a type and then call the script for said enemy type.
     {
@@ -57,25 +58,20 @@ public class EnemyBulletController : MonoBehaviour
             case "diver":
                 DiverController();
                 break;
+            case "gunship":
+                GunshipController(counter);
+                break;
         }
     }
 
     public void SetEnemyType(string type)                                                                              // This function is used by functions such as DiverEnemyShoot and BaseEnemyShoot in order to
     {                                                                                                                  //   allow for creating bullets on a different script and object.
-        switch (type)
-        {
-            case "base":
-                enemyType = type;
-                break;
+        enemyType = type;
+    }
 
-            case "diver":
-                enemyType = type;
-                break;
-
-            default:
-                enemyType = "base";
-                break;
-        }
+    public void SetEnemyCounter(int i)
+    {
+        counter = i;
     }
 
     private void BaseController()                                                                                      // Controls the movement of base enemy bullets as well as how long they last
@@ -101,6 +97,21 @@ public class EnemyBulletController : MonoBehaviour
         rb.AddForce(Vector2.up, ForceMode2D.Impulse);
 
         Invoke("Disable", diverActiveTime);
+    }
+
+    private void GunshipController(int counter) {
+        //const float halfPI = 180f;
+        //const double phi = 1.61803398874989484820458683436;
+        //float angle = halfPI;
+        const float golden = 0.30635f;
+        float golden_t = golden * counter;
+        
+        float bulDirX = transform.position.x + Mathf.Exp(golden_t) * Mathf.Cos(counter);                                                                // Mathf.Sin(((angle + halfPI * counter) * Mathf.PI) / halfPI);
+        float bulDirY = transform.position.y + Mathf.Exp(golden_t) * Mathf.Sin(counter);                                                                      // Mathf.Cos(((angle + halfPI * counter) * Mathf.PI) / halfPI);    
+        Vector3 bulMoveVector = new Vector3(bulDirX, bulDirY, 0f);
+        Vector2 bulDir = (bulMoveVector - transform.position).normalized; 
+
+        rb.AddForce(bulDir * bulletForce, ForceMode2D.Impulse); 
     }
 
     private void OnEnable()                                                                                            // Each time we re-activate a bullet, we need to reset its type (as we might use a bullet for a base
