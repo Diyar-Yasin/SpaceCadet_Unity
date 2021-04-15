@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -39,6 +39,8 @@ public class EnemyBulletController : MonoBehaviour
         private Rigidbody2D rb;
         private string enemyType;
         private int counter;
+        private int attack;
+        private float waitTime;
 
     void Start()                                                                                                       // At the start we always give a bullet a type and then call the script for said enemy type.
     {
@@ -59,7 +61,7 @@ public class EnemyBulletController : MonoBehaviour
                 DiverController();
                 break;
             case "gunship":
-                GunshipController(counter);
+                GunshipController();
                 break;
         }
     }
@@ -69,9 +71,11 @@ public class EnemyBulletController : MonoBehaviour
         enemyType = type;
     }
 
-    public void SetEnemyCounter(int i)
+    public void SetEnemyCounter(int i, int j, float k)
     {
         counter = i;
+        attack = j;
+        waitTime = k;
     }
 
     private void BaseController()                                                                                      // Controls the movement of base enemy bullets as well as how long they last
@@ -99,19 +103,54 @@ public class EnemyBulletController : MonoBehaviour
         Invoke("Disable", diverActiveTime);
     }
 
-    private void GunshipController(int counter) {
+    private void ChangeBulletPath()
+    {
+        if (gameObject.transform.position.x <= leftOfScreen)
+        {
+            rb.velocity = Vector3.zero;
+            rb.AddForce(Vector2.right * bulletForce, ForceMode2D.Impulse);
+        }
+        else if (gameObject.transform.position.x >= rightOfScreen)
+        {
+            rb.velocity = Vector3.zero;
+            rb.AddForce(-Vector2.right * bulletForce, ForceMode2D.Impulse);
+        }
+        else
+        {
+            rb.velocity = Vector3.zero;
+            rb.AddForce(Vector2.right * bulletForce, ForceMode2D.Impulse);
+        }
+    }
+    private void GunshipController() {
         //const float halfPI = 180f;
         //const double phi = 1.61803398874989484820458683436;
         //float angle = halfPI;
-        const float golden = 0.30635f;
-        float golden_t = golden * counter;
-        
-        float bulDirX = transform.position.x + Mathf.Exp(golden_t) * Mathf.Cos(counter);                                                                // Mathf.Sin(((angle + halfPI * counter) * Mathf.PI) / halfPI);
-        float bulDirY = transform.position.y + Mathf.Exp(golden_t) * Mathf.Sin(counter);                                                                      // Mathf.Cos(((angle + halfPI * counter) * Mathf.PI) / halfPI);    
-        Vector3 bulMoveVector = new Vector3(bulDirX, bulDirY, 0f);
-        Vector2 bulDir = (bulMoveVector - transform.position).normalized; 
+        rb.velocity = Vector3.zero;
 
-        rb.AddForce(bulDir * bulletForce, ForceMode2D.Impulse); 
+        switch (attack) 
+        {
+            case 0:
+                const float golden = 0.30635f;
+                float golden_t = golden * counter;
+                
+                float bulDirX = transform.position.x + Mathf.Exp(golden_t) * Mathf.Cos(counter);                                                                // Mathf.Sin(((angle + halfPI * counter) * Mathf.PI) / halfPI);
+                float bulDirY = transform.position.y + Mathf.Exp(golden_t) * Mathf.Sin(counter);                                                                      // Mathf.Cos(((angle + halfPI * counter) * Mathf.PI) / halfPI);    
+                Vector3 bulMoveVector = new Vector3(bulDirX, bulDirY, 0f);
+                Vector2 bulDir = (bulMoveVector - transform.position).normalized; 
+
+                rb.AddForce(bulDir * bulletForce, ForceMode2D.Impulse); 
+                break;
+            case 1:
+                rb.AddForce(-Vector2.up * bulletForce, ForceMode2D.Impulse);
+                Invoke("ChangeBulletPath", waitTime);
+                break;
+            case 2:
+                rb.AddForce(-Vector2.up * bulletForce, ForceMode2D.Impulse);
+                break;
+            case 3:
+                break;
+        }
+        Invoke("Disable", diverActiveTime);
     }
 
     private void OnEnable()                                                                                            // Each time we re-activate a bullet, we need to reset its type (as we might use a bullet for a base
@@ -131,6 +170,10 @@ public class EnemyBulletController : MonoBehaviour
 
                 case "diver":
                     DiverController();
+                    break;
+                
+                case "gunship":
+                    GunshipController();
                     break;
             }
         }                                                                                            

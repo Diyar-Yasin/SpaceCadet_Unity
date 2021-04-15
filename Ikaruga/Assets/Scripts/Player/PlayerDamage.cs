@@ -55,7 +55,7 @@ public class PlayerDamage : MonoBehaviour
                 StartCoroutine(Invincibility());                                             // We are orange, have been hit by an pink enemy bullet so we take damage.
 
             }
-            else if (other.tag == "P_Enemy" || other.tag == "O_Enemy")                                                 // If we touch enemies (regardless of their color or our color) we take damage. This is to
+            else if (other.tag == "P_Enemy" || other.tag == "O_Enemy" || other.tag == "Enemy")                                                 // If we touch enemies (regardless of their color or our color) we take damage. This is to
             {                                                                                                          //   discourage sitting inside large enemy models to avoid bullets but also adds realism.
                 StartCoroutine(Invincibility());
             }

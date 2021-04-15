@@ -12,6 +12,7 @@ TagManager:
   - P_Player_Bullet
   - O_Player_Bullet
   - Score
+  - Laser
   layers:
   - Default
   - TransparentFX

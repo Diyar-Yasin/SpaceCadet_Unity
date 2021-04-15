@@ -52,7 +52,7 @@ Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
 			GameObject scoreText = GameObject.FindGameObjectWithTag("Score");
 			Score score = scoreText.GetComponent<Score>();
 			score.ScoreAdd_AbsorbedBullet();
-
+			
 			gameObject.SetActive(false);
 		}
 

@@ -4,11 +4,36 @@ using UnityEngine;
 
 public class Gunship_Shoot : MonoBehaviour
 {
+    // PUBLIC
+        // VARIABLES
+        public Animator anim;
+        public Transform firePoint1;
+        public Transform firePoint2;
+        public Transform firePoint3;
+        public Transform firePoint4;
+        public Transform firePoint5;
+        public Transform firePoint6;
+        public Transform cannon1;
+        public Transform cannon2;
+        public Transform garage1;
+        public Transform garage2;
+        public Transform megaCannon;
+        public Transform megaCannonLeft;
+        public Transform megaCannonRight;
+        
     // PRIVATE
+        // CONSTANTS
+        private const int goldenAttack = 0;
+        private const int gridAttack = 1;
+        private const int holeAttack = 2;
+        private const int spawnAttack = 3;
+
         // VARIABLES
         private bool bulletIsOrange;
         private int orangeCounter;
         private int pinkCounter;
+        private GameObject laser1;
+        private GameObject laser2;
 
     void Start()
     {
@@ -23,31 +48,20 @@ public class Gunship_Shoot : MonoBehaviour
         bulletIsOrange = true;
         orangeCounter = 0;
         pinkCounter = 10;
+        laser1 = gameObject.transform.GetChild(11).gameObject;
+        laser2 = gameObject.transform.GetChild(12).gameObject;
 
-        Shoot();
+        StartCoroutine(Shoot());
     }
 
     IEnumerator GoldenRatioAttack()
     {
-        if (orangeCounter > 100)  // if counter goes up around 280+ range then the force values that are calculated are NaN leading to errors
-        {
-            orangeCounter = 0;
-        } 
-        else
+        while (orangeCounter <= 100 && pinkCounter <= 110)
         {
             orangeCounter++;
-        }
-
-        if (pinkCounter > 110) 
-        {
-            pinkCounter = 10;
-        }
-        else 
-        {
             pinkCounter++;
-        }
 
-        yield return new WaitForSeconds(0.03f);                                                                         // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to 
+            yield return new WaitForSeconds(0.03f);                                                                         // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to 
                                                                                                                        //   initialize and create its objects before we call on it to grab bullets.
         Quaternion bulletRotation = Quaternion.identity;                                                               //   Not doing this leads to a NullReferenceException because the pooledObjects.Count does not yet 
                                                                                                                        //   exist in PinkEnemyBulletPooler.cs (the orange verison worked for some reason).
@@ -57,14 +71,14 @@ public class Gunship_Shoot : MonoBehaviour
 
             if (oBullet == null)
             {
-                StartCoroutine(GoldenRatioAttack()); // do we want this or just call Shoot();?
+                //StartCoroutine(GoldenRatioAttack()); // do we want this or just call Shoot();?
                 yield break;
             }
 
-            oBullet.transform.position = gameObject.transform.position;                                                // Set the positon and rotation of the bullet
+            oBullet.transform.position = megaCannon.position;                                                // Set the positon and rotation of the bullet
             oBullet.transform.rotation = bulletRotation;
             oBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                                        // This will tell the bullet controller script how the bullet will move once shot
-            oBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(orangeCounter);
+            oBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(orangeCounter, goldenAttack, 0f);
             oBullet.SetActive(true);                                                                                   // Activate the bullet
         //}
        // else
@@ -73,28 +87,131 @@ public class Gunship_Shoot : MonoBehaviour
 
             if (pBullet == null)
             {
-                StartCoroutine(GoldenRatioAttack());
+                //StartCoroutine(GoldenRatioAttack());
                 yield break;
             }
 
-            pBullet.transform.position = gameObject.transform.position;                                                // Set the positon and rotation of the bullet
+            pBullet.transform.position = megaCannon.position;                                          // Set the positon and rotation of the bullet
             pBullet.transform.rotation = bulletRotation;
             pBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                                        // This will tell the bullet controller script how the bullet will move once shot
-            pBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(pinkCounter);
+            pBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(pinkCounter, goldenAttack, 0f);
             pBullet.SetActive(true);                                                                                   // Activate the bullet
-     //   }
-        
-        Shoot();
+     //   
+        }
+        orangeCounter = 0;
+        pinkCounter = 10;
+        yield break;
+
     }
 
-    IEnumerator GridAttack() 
+    IEnumerator GridAttack(Transform firePoint) 
     {
-        yield return new WaitForSeconds(1f);
+        float waitTime = Random.Range(0.6f, 1.9f);
+
+        while (orangeCounter <= 8)
+        {
+            orangeCounter++;
+
+            yield return new WaitForSeconds(0.05f);                                                                    // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to 
+                                                                                                                       //   initialize and create its objects before we call on it to grab bullets.
+            Quaternion bulletRotation = Quaternion.identity;                                                               //   Not doing this leads to a NullReferenceException because the pooledObjects.Count does not yet 
+                                                                                                                       //   exist in PinkEnemyBulletPooler.cs (the orange verison worked for some reason).
+
+            if (bulletIsOrange)
+            {
+                GameObject oBullet = OrangeEnemyBulletPooler.current.GetOrangeEnemyBullet();
+
+                if (oBullet == null)
+                {
+                    yield break;
+                }
+
+                oBullet.transform.position = firePoint.position;                                                // Set the positon and rotation of the bullet
+                oBullet.transform.rotation = bulletRotation;
+                oBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                                        // This will tell the bullet controller script how the bullet will move once shot
+                oBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(orangeCounter, gridAttack, waitTime);
+                oBullet.SetActive(true);                                                                                   // Activate the bullet
+            }
+            else
+            {
+                GameObject pBullet = PinkEnemyBulletPooler.current.GetPinkEnemyBullet();
+
+                if (pBullet == null)
+                {
+                    yield break;
+                }
+
+                pBullet.transform.position = firePoint.position;                                          // Set the positon and rotation of the bullet
+                pBullet.transform.rotation = bulletRotation;
+                pBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                     // This will tell the bullet controller script how the bullet will move once shot
+                pBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(pinkCounter, gridAttack, waitTime);
+                pBullet.SetActive(true);                                                                   // Activate the bullet
+            
+            }
+        }
+        orangeCounter = 0;
+        yield break;
     }
 
-    IEnumerator HoleInTheWallAttack() 
+    IEnumerator HoleInTheWallAttack()
     {
-        yield return new WaitForSeconds(1f);
+        anim.SetBool("Charging_Laser", true);
+        yield return new WaitForSeconds(.5f);       
+        anim.SetBool("Charging_Laser", false);
+
+        laser1.GetComponent<Laser>().controlLasers(true); //Getting the component each time may be very inefficient!
+        laser2.GetComponent<Laser>().controlLasers(true);
+
+        while (orangeCounter <= 30)
+        {
+            orangeCounter++;
+
+            yield return new WaitForSeconds(.5f);                                                                    // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to 
+                                                                                                                       //   initialize and create its objects before we call on it to grab bullets.
+            Quaternion bulletRotation = Quaternion.identity;                                                               //   Not doing this leads to a NullReferenceException because the pooledObjects.Count does not yet 
+                                                                                                                       //   exist in PinkEnemyBulletPooler.cs (the orange verison worked for some reason).
+
+            if (bulletIsOrange)
+            {
+                GameObject oBullet = OrangeEnemyBulletPooler.current.GetOrangeEnemyBullet();
+
+                if (oBullet == null)
+                {
+                    laser1.GetComponent<Laser>().controlLasers(false);
+                    laser2.GetComponent<Laser>().controlLasers(false);
+                    yield break;
+                }
+
+                oBullet.transform.position = megaCannonLeft.position;                                                // Set the positon and rotation of the bullet
+                oBullet.transform.rotation = bulletRotation;
+                oBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                                        // This will tell the bullet controller script how the bullet will move once shot
+                oBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(orangeCounter, holeAttack, 0f);
+                oBullet.SetActive(true);                                                                                   // Activate the bullet
+            }
+            else
+            {
+                GameObject pBullet = PinkEnemyBulletPooler.current.GetPinkEnemyBullet();
+
+                if (pBullet == null)
+                {
+                    laser1.GetComponent<Laser>().controlLasers(false);
+                    laser2.GetComponent<Laser>().controlLasers(false);
+                    yield break;
+                }
+
+                pBullet.transform.position = megaCannonLeft.position;                                          // Set the positon and rotation of the bullet
+                pBullet.transform.rotation = bulletRotation;
+                pBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                     // This will tell the bullet controller script how the bullet will move once shot
+                pBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(pinkCounter, holeAttack, 0f);
+                pBullet.SetActive(true);                                                                   // Activate the bullet
+            
+            }
+        }
+        orangeCounter = 0;
+        laser1.GetComponent<Laser>().controlLasers(false);
+        laser2.GetComponent<Laser>().controlLasers(false);
+
+        yield break;
     }
 
     IEnumerator EnemySpawnAttack() 
@@ -118,39 +235,66 @@ public class Gunship_Shoot : MonoBehaviour
         return currentMoveSet;
     }
 
-    void Shoot()
+    IEnumerator Shoot()
     {
-        int[] movesLeft = {0, 1, 2, 3};
-        int movesLeftLen = 4;
-        int move = move = movesLeft[Random.Range(0, movesLeftLen)];
 
+        for (int i = 0; i < 20; i++)
+        {
+            StartCoroutine(GridAttack(firePoint1));
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(HoleInTheWallAttack());
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(GoldenRatioAttack());
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(GoldenRatioAttack());
+            yield return new WaitForSeconds(4f);
+        }
+        
+        /*
+        bulletIsOrange = false;
+        StartCoroutine(GridAttack(firePoint6));
+        bulletIsOrange = true;
+        StartCoroutine(GridAttack(firePoint2));
+        yield return new WaitForSeconds(1f);
+        bulletIsOrange = false;
+        StartCoroutine(GridAttack(firePoint5));
+        bulletIsOrange = true;
+        StartCoroutine(GridAttack(firePoint3));
+        bulletIsOrange = false;
+        StartCoroutine(GridAttack(firePoint4));
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(GoldenRatioAttack());*/
+        /*int[] movesLeft = {0, 1, 2, 3};
+        int movesLeftLen = 4;
+        //int move = movesLeft[Random.Range(0, movesLeftLen)];
+        int move = 0;
         while (movesLeftLen > 0) // this loops forever
         {
             switch (move)
             {
                 case 0:
                     StartCoroutine(GoldenRatioAttack());
-                    RemoveMove(move, movesLeftLen, movesLeft);
-                    movesLeftLen--;
+                    //movesLeft = RemoveMove(move, movesLeftLen, movesLeft);
+                    //movesLeftLen--;
                     break;
                 case 1:
                     // GridAttack
-                    RemoveMove(move, movesLeftLen, movesLeft);
+                    movesLeft = RemoveMove(move, movesLeftLen, movesLeft);
                     movesLeftLen--;
                     break;
                 case 2:
                     // HoleInTheWallAttack
-                    RemoveMove(move, movesLeftLen, movesLeft);
+                    movesLeft = RemoveMove(move, movesLeftLen, movesLeft);
                     movesLeftLen--;
                     break;
                 case 3:
                     // EnemySpawnAttack
-                    RemoveMove(move, movesLeftLen, movesLeft);
+                    movesLeft = RemoveMove(move, movesLeftLen, movesLeft);
                     movesLeftLen--;
                     break;
             }
 
-            if (movesLeftLen == 0) 
+            /*if (movesLeftLen == 0) 
             {
                 movesLeftLen = 4;
                 for (int i = 0; i < movesLeftLen; i++)
@@ -160,7 +304,7 @@ public class Gunship_Shoot : MonoBehaviour
             }
             
             move = movesLeft[Random.Range(0, movesLeftLen)];
-        }
+        }*/
 
         
     }
