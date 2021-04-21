@@ -166,13 +166,13 @@ public class Gunship_Shoot : MonoBehaviour
         {
             orangeCounter++;
 
-            yield return new WaitForSeconds(.5f);                                                                    // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to 
+            yield return new WaitForSeconds(1f);                                                                    // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to 
                                                                                                                        //   initialize and create its objects before we call on it to grab bullets.
             Quaternion bulletRotation = Quaternion.identity;                                                               //   Not doing this leads to a NullReferenceException because the pooledObjects.Count does not yet 
                                                                                                                        //   exist in PinkEnemyBulletPooler.cs (the orange verison worked for some reason).
-
-            if (bulletIsOrange)
-            {
+            float spacing = -22.5f;
+            const float spacingInterval = 1.5f;
+            for (int i = 0; i < 23; i++) { // repeating this 15 times to produce 30 total bullets that simulate a wall of bullets, each one spaced 1.5 apart in the X direction
                 GameObject oBullet = OrangeEnemyBulletPooler.current.GetOrangeEnemyBullet();
 
                 if (oBullet == null)
@@ -182,29 +182,30 @@ public class Gunship_Shoot : MonoBehaviour
                     yield break;
                 }
 
-                oBullet.transform.position = megaCannonLeft.position;                                                // Set the positon and rotation of the bullet
+                oBullet.transform.position = firePoint1.position + new Vector3(spacing, 0f, 0f);                                                // Set the positon and rotation of the bullet
                 oBullet.transform.rotation = bulletRotation;
                 oBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                                        // This will tell the bullet controller script how the bullet will move once shot
-                oBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(orangeCounter, holeAttack, 0f);
-                oBullet.SetActive(true);                                                                                   // Activate the bullet
-            }
-            else
-            {
+                oBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(orangeCounter, holeAttack, spacing);
+                oBullet.SetActive(true);                                                                         // Activate the bullet
+                
+                spacing += spacingInterval;
+
                 GameObject pBullet = PinkEnemyBulletPooler.current.GetPinkEnemyBullet();
 
                 if (pBullet == null)
                 {
                     laser1.GetComponent<Laser>().controlLasers(false);
                     laser2.GetComponent<Laser>().controlLasers(false);
-                    yield break;
+                yield break;
                 }
 
-                pBullet.transform.position = megaCannonLeft.position;                                          // Set the positon and rotation of the bullet
+                pBullet.transform.position = firePoint1.position + new Vector3(spacing, 0f, 0f);                                            // Set the positon and rotation of the bullet
                 pBullet.transform.rotation = bulletRotation;
                 pBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                     // This will tell the bullet controller script how the bullet will move once shot
                 pBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(pinkCounter, holeAttack, 0f);
-                pBullet.SetActive(true);                                                                   // Activate the bullet
-            
+                pBullet.SetActive(true);
+
+                spacing += spacingInterval;  
             }
         }
         orangeCounter = 0;
@@ -240,13 +241,13 @@ public class Gunship_Shoot : MonoBehaviour
 
         for (int i = 0; i < 20; i++)
         {
-            StartCoroutine(GridAttack(firePoint1));
+            //StartCoroutine(GridAttack(firePoint1));
             yield return new WaitForSeconds(1f);
             StartCoroutine(HoleInTheWallAttack());
             yield return new WaitForSeconds(1f);
-            StartCoroutine(GoldenRatioAttack());
+            //StartCoroutine(GoldenRatioAttack());
             yield return new WaitForSeconds(1f);
-            StartCoroutine(GoldenRatioAttack());
+            //StartCoroutine(GoldenRatioAttack());
             yield return new WaitForSeconds(4f);
         }
         

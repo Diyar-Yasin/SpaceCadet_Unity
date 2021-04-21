@@ -14,8 +14,8 @@ public class StarScrollSetTwo : MonoBehaviour
 {
     // PRIVATE
         // CONSTANTS
-        private const int start_height = 283;
-        private const int end_height = -83;
+        private const int start_height = 270;
+        private const int end_height = -70;
 
     // PUBLIC
         // VARIABLES

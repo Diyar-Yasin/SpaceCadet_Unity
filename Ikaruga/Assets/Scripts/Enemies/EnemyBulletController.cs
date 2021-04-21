@@ -145,7 +145,8 @@ public class EnemyBulletController : MonoBehaviour
                 Invoke("ChangeBulletPath", waitTime);
                 break;
             case 2:
-                rb.AddForce(-Vector2.up * bulletForce, ForceMode2D.Impulse);
+                float wallBulletForce = bulletForce * 0.75f;
+                rb.AddForce(-Vector2.up * wallBulletForce, ForceMode2D.Impulse);
                 break;
             case 3:
                 break;
