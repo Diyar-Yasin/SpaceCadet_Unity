@@ -43,7 +43,7 @@ public class BulletController : MonoBehaviour
 
         bulletShot.Play();
 
-        Invoke("Disable", 1f);                                                                                             
+        Invoke("Disable", 1.75f);                                                                                             
     }
 
     private void OnBecameInvisible() 

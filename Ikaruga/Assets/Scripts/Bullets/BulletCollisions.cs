@@ -54,7 +54,7 @@ public class BulletCollisions : MonoBehaviour
         }
         else if (gameObject.tag == "P_Player_Bullet" || gameObject.tag == "O_Player_Bullet")                           // If the object itself is a player's bullet, then we check if it hit an enemy. If it did,
         {                                                                                                              //   regardless of color, we deactivate the player bullet.
-            if (other.tag == "P_Enemy" || other.tag == "O_Enemy")
+            if (other.tag == "P_Enemy" || other.tag == "O_Enemy" || other.tag == "Enemy")
             {
                 gameObject.SetActive(false);
             }

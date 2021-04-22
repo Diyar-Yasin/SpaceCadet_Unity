@@ -145,7 +145,7 @@ public class EnemyBulletController : MonoBehaviour
                 Invoke("ChangeBulletPath", waitTime);
                 break;
             case 2:
-                float wallBulletForce = bulletForce * 0.75f;
+                float wallBulletForce = bulletForce * 0.75f * waitTime; //the waitTime is normally set to 1, but for the extra fast wall we will multiply its speed
                 rb.AddForce(-Vector2.up * wallBulletForce, ForceMode2D.Impulse);
                 break;
             case 3:
