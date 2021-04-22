@@ -17,7 +17,7 @@ public class Laser : MonoBehaviour
 
     void Start()
     {
-        layerMask = LayerMask.GetMask("Default"); // How does this layermask work?
+        layerMask = (LayerMask.GetMask("Player")); // How does this layermask work?
         activeLasers = false;
     }
 
@@ -72,23 +72,27 @@ public class Laser : MonoBehaviour
                 Draw2DRay(firePoint.position, new Vector3( Mathf.Cos(fivePiOverFour), Mathf.Sin(fivePiOverFour),0f ) * defDistanceRay);
             }
         }
-        
-        RaycastHit2D hit = Physics2D.Raycast(mTransform.position, transform.right, layerMask);
 
-        if (hit.collider != null)
-        {
-            Debug.Log("WE JUST HIT THE PLAYER!");
-        }
+        RaycastHit2D hitLaser1 = Physics2D.Linecast(firePoint.position, new Vector3( Mathf.Cos(sevenPiOverFour), Mathf.Sin(sevenPiOverFour),0f ) * defDistanceRay, layerMask);
+        RaycastHit2D hitLaser2 = Physics2D.Linecast(firePoint.position, new Vector3( Mathf.Cos(fivePiOverFour), Mathf.Sin(fivePiOverFour),0f ) * defDistanceRay, layerMask);
 
-        
-        /*if (Physics2D.Raycast(mTransform.position, transform.right))
+        if (hitLaser1.collider != null && hitLaser1.collider.tag == "Player")
         {
-            
-            Draw2DRay(firePoint.position, hit.point);
+            PlayerDamage dmgPlayer = hitLaser1.collider.GetComponent<PlayerDamage>();
+
+            if (dmgPlayer)
+            {
+                dmgPlayer.RayCastCollision();
+            }
         }
-        else
+        if (hitLaser2.collider != null && hitLaser2.collider.tag == "Player")
         {
-            
-        }*/
+            PlayerDamage dmgPlayer = hitLaser2.collider.GetComponent<PlayerDamage>();
+
+            if (dmgPlayer)
+            {
+                dmgPlayer.RayCastCollision();
+            }
+        }
     }
 }

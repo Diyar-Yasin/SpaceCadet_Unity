@@ -21,6 +21,7 @@ public class PlayerDamage : MonoBehaviour
         public Animator anim;
         public int lives = 4;
         public GameObject healthObj;
+        public static PlayerDamage current;
 
     // PRIVATE
         // CONSTANTS
@@ -59,6 +60,14 @@ public class PlayerDamage : MonoBehaviour
             {                                                                                                          //   discourage sitting inside large enemy models to avoid bullets but also adds realism.
                 StartCoroutine(Invincibility());
             }
+        }
+    }
+
+    public void RayCastCollision() //This function will be called by Laser.cs as Raycast has no colliders and thus needs to deal damage to the player directly
+    {
+        if (!invincible)
+        {
+            StartCoroutine(Invincibility());
         }
     }
 

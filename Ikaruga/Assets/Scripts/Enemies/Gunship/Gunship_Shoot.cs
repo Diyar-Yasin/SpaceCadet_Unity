@@ -109,7 +109,7 @@ public class Gunship_Shoot : MonoBehaviour
 
     IEnumerator GridAttack(Transform firePoint) 
     {
-        float waitTime = Random.Range(0.6f, 1.9f);
+        float waitTime = Random.Range(0.6f, 2.3f);
 
         orangeCounter = 0;
 
@@ -372,75 +372,85 @@ public class Gunship_Shoot : MonoBehaviour
         const float holeInTheWallTotalTime = 12.5f;
         const float enemySpawnTotalTime = 6f;
 
-        yield return new WaitForSeconds(spawnTime); // Gives the Gunship time to play its spawning animation
-
-        for (int i = 0; i < 30; i++)
-        {
-            StartCoroutine(EnemySpawnAttack());
-            yield return new WaitForSeconds(enemySpawnTotalTime);
-            StartCoroutine(HoleInTheWallAttack());
-            yield return new WaitForSeconds(holeInTheWallTotalTime);
-            StartCoroutine(GridAttack(firePoint1));
-            StartCoroutine(GridAttack(firePoint2));
-            yield return new WaitForSeconds(gridTotalTime);
-            StartCoroutine(GridAttack(firePoint3));
-            StartCoroutine(GridAttack(firePoint4));
-            yield return new WaitForSeconds(gridTotalTime);
-            StartCoroutine(GridAttack(firePoint5));
-            StartCoroutine(GridAttack(firePoint6));
-            yield return new WaitForSeconds(gridTotalTime);
-            StartCoroutine(GoldenRatioAttack());
-            yield return new WaitForSeconds(goldenRatioTotalTime);
-            //StartCoroutine(HoleInTheWallAttack());
-        }
-        //StartCoroutine(HoleInTheWallAttack());
-        //StartCoroutine(GoldenRatioAttack());
-
-        /*
-        bulletIsOrange = false;
-        StartCoroutine(GridAttack(firePoint6));
-        bulletIsOrange = true;
-        StartCoroutine(GridAttack(firePoint2));
-        yield return new WaitForSeconds(1f);
-        bulletIsOrange = false;
-        StartCoroutine(GridAttack(firePoint5));
-        bulletIsOrange = true;
-        StartCoroutine(GridAttack(firePoint3));
-        bulletIsOrange = false;
-        StartCoroutine(GridAttack(firePoint4));
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(GoldenRatioAttack());*/
-        /*int[] movesLeft = {0, 1, 2, 3};
+        int[] movesLeft = {0, 1, 2, 3};
         int movesLeftLen = 4;
-        //int move = movesLeft[Random.Range(0, movesLeftLen)];
-        int move = 0;
+        int move = movesLeft[Random.Range(0, movesLeftLen)];
+
+        yield return new WaitForSeconds(spawnTime); // Gives the Gunship time to play its spawning animation
+        
         while (movesLeftLen > 0) // this loops forever
         {
             switch (move)
             {
                 case 0:
                     StartCoroutine(GoldenRatioAttack());
-                    //movesLeft = RemoveMove(move, movesLeftLen, movesLeft);
-                    //movesLeftLen--;
+                    movesLeft = RemoveMove(move, movesLeftLen, movesLeft);
+                    movesLeftLen--;
+                    yield return new WaitForSeconds(goldenRatioTotalTime);
                     break;
                 case 1:
-                    // GridAttack
+
+                    switch (movesLeftLen) // this allows me to choose from 4 diff configurations of the grid attack
+                    {
+                        case 4: //shoots outermost ones and goes towards inside
+                        StartCoroutine(GridAttack(firePoint1));
+                        StartCoroutine(GridAttack(firePoint6));
+                        yield return new WaitForSeconds(gridTotalTime);
+                        StartCoroutine(GridAttack(firePoint2));
+                        StartCoroutine(GridAttack(firePoint5));
+                        yield return new WaitForSeconds(gridTotalTime);
+                        StartCoroutine(GridAttack(firePoint3));
+                        StartCoroutine(GridAttack(firePoint4));
+                        break;
+
+                        case 3: //shoots innermost ones and goes towards outside
+                        StartCoroutine(GridAttack(firePoint3));
+                        StartCoroutine(GridAttack(firePoint4));
+                        yield return new WaitForSeconds(gridTotalTime);
+                        StartCoroutine(GridAttack(firePoint2));
+                        StartCoroutine(GridAttack(firePoint5));
+                        yield return new WaitForSeconds(gridTotalTime);
+                        StartCoroutine(GridAttack(firePoint1));
+                        StartCoroutine(GridAttack(firePoint6));
+                        break;
+
+                        case 2: //shoots left to right
+                        StartCoroutine(GridAttack(firePoint1));
+                        StartCoroutine(GridAttack(firePoint2));
+                        StartCoroutine(GridAttack(firePoint3));
+                        StartCoroutine(GridAttack(firePoint4));
+                        StartCoroutine(GridAttack(firePoint5));
+                        StartCoroutine(GridAttack(firePoint6));
+                        break;
+
+                        case 1: //shoots right to left
+                        StartCoroutine(GridAttack(firePoint6));
+                        StartCoroutine(GridAttack(firePoint5));
+                        StartCoroutine(GridAttack(firePoint4));
+                        StartCoroutine(GridAttack(firePoint3));
+                        StartCoroutine(GridAttack(firePoint2));
+                        StartCoroutine(GridAttack(firePoint1));
+                        break;
+                    }
                     movesLeft = RemoveMove(move, movesLeftLen, movesLeft);
                     movesLeftLen--;
+                    yield return new WaitForSeconds(gridTotalTime);
                     break;
                 case 2:
-                    // HoleInTheWallAttack
+                    StartCoroutine(HoleInTheWallAttack());
                     movesLeft = RemoveMove(move, movesLeftLen, movesLeft);
                     movesLeftLen--;
+                    yield return new WaitForSeconds(holeInTheWallTotalTime);
                     break;
                 case 3:
-                    // EnemySpawnAttack
+                    StartCoroutine(EnemySpawnAttack());
                     movesLeft = RemoveMove(move, movesLeftLen, movesLeft);
                     movesLeftLen--;
+                    yield return new WaitForSeconds(enemySpawnTotalTime);
                     break;
             }
 
-            /*if (movesLeftLen == 0) 
+            if (movesLeftLen == 0) 
             {
                 movesLeftLen = 4;
                 for (int i = 0; i < movesLeftLen; i++)
@@ -450,7 +460,7 @@ public class Gunship_Shoot : MonoBehaviour
             }
             
             move = movesLeft[Random.Range(0, movesLeftLen)];
-        }*/
+        }
 
         
     }

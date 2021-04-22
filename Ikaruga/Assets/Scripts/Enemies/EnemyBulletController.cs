@@ -34,6 +34,7 @@ public class EnemyBulletController : MonoBehaviour
         private const int rightOfScreen = 10;
         private const float diverActiveTime = 4f;
         private const float baseActiveTime = 2f;
+        private const float gunshipActiveTime = 7f;
 
         // VARIABLES
         private Rigidbody2D rb;
@@ -151,7 +152,7 @@ public class EnemyBulletController : MonoBehaviour
             case 3:
                 break;
         }
-        Invoke("Disable", diverActiveTime);
+        Invoke("Disable", gunshipActiveTime);
     }
 
     private void OnEnable()                                                                                            // Each time we re-activate a bullet, we need to reset its type (as we might use a bullet for a base
