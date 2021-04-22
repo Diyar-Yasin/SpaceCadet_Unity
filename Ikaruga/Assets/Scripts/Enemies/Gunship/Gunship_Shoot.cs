@@ -112,7 +112,7 @@ public class Gunship_Shoot : MonoBehaviour
         float waitTime = Random.Range(0.6f, 1.9f);
 
         orangeCounter = 0;
-        
+
         while (orangeCounter <= 8)
         {
             orangeCounter++;
@@ -121,6 +121,16 @@ public class Gunship_Shoot : MonoBehaviour
                                                                                                                        //   initialize and create its objects before we call on it to grab bullets.
             Quaternion bulletRotation = Quaternion.identity;                                                               //   Not doing this leads to a NullReferenceException because the pooledObjects.Count does not yet 
                                                                                                                        //   exist in PinkEnemyBulletPooler.cs (the orange verison worked for some reason).
+            int colorChoose = Random.Range(0, 2); // Ensures we don't have fully absorbable grid lines (of course there is a very small chance that still happens)
+
+            if (colorChoose == 0) 
+            {
+                bulletIsOrange = true;
+            }
+            else
+            {
+                bulletIsOrange = false;
+            }
 
             if (bulletIsOrange)
             {
@@ -285,9 +295,57 @@ public class Gunship_Shoot : MonoBehaviour
         yield break;
     }
 
-    IEnumerator EnemySpawnAttack() 
+    IEnumerator EnemySpawnAttack()  //Note: Calling this attack successively causes too many enemies to appear on the screen, dont do that, the UX is ruined
     {
-        yield return new WaitForSeconds(1f);
+        int spawnSet = Random.Range(0, 4); // Depending on the random number, a different set of enemies will be spawned for the attack
+
+        anim.SetBool("Spawning_Enemies", true);
+        
+        switch (spawnSet)
+        {
+            case 0: // 4 base enemies + 2 divers
+            Instantiate(GameAssets.i.pBaseEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.oDiverEnemy, garage2.position, Quaternion.identity);
+            Instantiate(GameAssets.i.oBaseEnemy, garage2.position, Quaternion.identity);
+            yield return new WaitForSeconds(1f);
+            Instantiate(GameAssets.i.pDiverEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.oBaseEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.pBaseEnemy, garage2.position, Quaternion.identity);
+            break;
+
+            case 1: // 4 divers + 2 base enemies
+            Instantiate(GameAssets.i.pBaseEnemy, garage2.position, Quaternion.identity);
+            Instantiate(GameAssets.i.pDiverEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.oDiverEnemy, garage2.position, Quaternion.identity);
+            yield return new WaitForSeconds(1f);
+            Instantiate(GameAssets.i.oBaseEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.oDiverEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.pDiverEnemy, garage2.position, Quaternion.identity);
+            break;
+
+            case 2: // 3 divers + 3 base enemies
+            Instantiate(GameAssets.i.oBaseEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.pDiverEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.pBaseEnemy, garage2.position, Quaternion.identity);
+            Instantiate(GameAssets.i.oDiverEnemy, garage2.position, Quaternion.identity);
+            yield return new WaitForSeconds(1f);
+            Instantiate(GameAssets.i.oDiverEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.pBaseEnemy, garage1.position, Quaternion.identity);
+            break;
+
+            case 3: // 6 divers
+            Instantiate(GameAssets.i.pDiverEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.oDiverEnemy, garage2.position, Quaternion.identity);
+            yield return new WaitForSeconds(0.5f);
+            Instantiate(GameAssets.i.pDiverEnemy, garage2.position, Quaternion.identity);
+            Instantiate(GameAssets.i.oDiverEnemy, garage1.position, Quaternion.identity);
+            yield return new WaitForSeconds(0.5f);
+            Instantiate(GameAssets.i.pDiverEnemy, garage1.position, Quaternion.identity);
+            Instantiate(GameAssets.i.oDiverEnemy, garage2.position, Quaternion.identity);
+            break;
+        }
+
+        anim.SetBool("Spawning_Enemies", false);
     }
 
     int[] RemoveMove(int move, int len, int[] currentMoveSet)
@@ -308,12 +366,18 @@ public class Gunship_Shoot : MonoBehaviour
 
     IEnumerator Shoot()
     {
+        const float spawnTime = 3.5f;
         const float goldenRatioTotalTime = 3f;
         const float gridTotalTime = 2.3f;
         const float holeInTheWallTotalTime = 12.5f;
-        
+        const float enemySpawnTotalTime = 6f;
+
+        yield return new WaitForSeconds(spawnTime); // Gives the Gunship time to play its spawning animation
+
         for (int i = 0; i < 30; i++)
         {
+            StartCoroutine(EnemySpawnAttack());
+            yield return new WaitForSeconds(enemySpawnTotalTime);
             StartCoroutine(HoleInTheWallAttack());
             yield return new WaitForSeconds(holeInTheWallTotalTime);
             StartCoroutine(GridAttack(firePoint1));

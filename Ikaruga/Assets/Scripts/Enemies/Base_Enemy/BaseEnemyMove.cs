@@ -53,7 +53,7 @@ public class BaseEnemyMove : MonoBehaviour
                 moveSpots = new Transform[3];
                 moveSpots[0] = base3.transform.GetChild(0).transform;
                 moveSpots[1] = base3.transform.GetChild(1).transform;
-                moveSpots[2] = base3.transform.GetChild(1).transform;
+                moveSpots[2] = base3.transform.GetChild(2).transform;
                 break;
             default:
                 break;

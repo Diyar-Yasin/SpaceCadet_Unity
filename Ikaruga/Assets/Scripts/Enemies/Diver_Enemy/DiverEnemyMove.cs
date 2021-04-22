@@ -106,7 +106,7 @@ public class DiverEnemyMove : MonoBehaviour
 
         rb.AddForce((new Vector2(xTarg, yTarg)).normalized * diveForce, ForceMode2D.Impulse);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
         Destroy(this.gameObject);
     }

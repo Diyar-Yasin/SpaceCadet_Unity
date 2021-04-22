@@ -6,6 +6,7 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
     private float defDistanceRay = 100;
+    private int layerMask;
     public LineRenderer lineRenderer;
     public Transform firePoint;
     Transform mTransform;
@@ -16,6 +17,7 @@ public class Laser : MonoBehaviour
 
     void Start()
     {
+        layerMask = LayerMask.GetMask("Default"); // How does this layermask work?
         activeLasers = false;
     }
 
@@ -47,6 +49,7 @@ public class Laser : MonoBehaviour
         lineRenderer.SetPosition(0, startPos);
         lineRenderer.SetPosition(1, endPos);
     }
+
     private void Awake()
     {
         mTransform = GetComponent<Transform>();
@@ -70,11 +73,17 @@ public class Laser : MonoBehaviour
             }
         }
         
+        RaycastHit2D hit = Physics2D.Raycast(mTransform.position, transform.right, layerMask);
+
+        if (hit.collider != null)
+        {
+            Debug.Log("WE JUST HIT THE PLAYER!");
+        }
 
         
         /*if (Physics2D.Raycast(mTransform.position, transform.right))
         {
-            RaycastHit2D hit = Physics2D.Raycast(mTransform.position, transform.right);
+            
             Draw2DRay(firePoint.position, hit.point);
         }
         else
