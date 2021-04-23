@@ -15,6 +15,7 @@ public class Gunship_Destroy : MonoBehaviour
         // VARIABLES
         private int health = 2000; 
         private bool alreadyDead = false;
+        private AudioManager audioManager;
 
     void OnTriggerEnter2D(Collider2D other)                                                                            // As soon as a BaseEnemy collides with something, we need to check if it collided with a player
     {                                                                                                                  //   bullet. If it did then we decrease the health of the enemy. Player bullets with color opposite
@@ -40,8 +41,12 @@ public class Gunship_Destroy : MonoBehaviour
 
     IEnumerator Death() 
     {
-        anim.SetBool("Death", true);
+        audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Play("Gunship_Death");
+        yield return new WaitForSeconds(2f);
 
+        anim.SetBool("Death", true);
+        audioManager.Play("Gunship_Death2");
         yield return new WaitForSeconds(2f);
 
         gameObject.SetActive(false);

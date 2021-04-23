@@ -106,6 +106,7 @@ public class PlayerDamage : MonoBehaviour
         }
         else
         {
+            FindObjectOfType<AudioManager>().Loop("Player_BulletShot"); // Turn off the loop of the player bullet shot sound 
             anim.SetBool("No_Lives_Left", true);
 
             yield return new WaitForSeconds(4 * invincibilityTime);

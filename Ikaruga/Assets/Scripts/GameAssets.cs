@@ -25,9 +25,7 @@ public class GameAssets : MonoBehaviour
     }
 
     public Transform pointsPopup;
-
     public AudioClip bulletShot;
-
     public GameObject pBaseEnemy;
     public GameObject oBaseEnemy;
     public GameObject pDiverEnemy;

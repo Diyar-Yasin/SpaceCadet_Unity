@@ -64,6 +64,7 @@ public class BaseEnemyDestroy : MonoBehaviour
     IEnumerator Death() 
     {
         anim.SetBool("Death", true);
+        FindObjectOfType<AudioManager>().Play("Enemy_Death");
 
         yield return new WaitForSeconds(0.4f);
 

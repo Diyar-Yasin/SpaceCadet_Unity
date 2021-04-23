@@ -27,7 +27,7 @@ public class Gunship_Shoot : MonoBehaviour
         private const int gridAttack = 1;
         private const int holeAttack = 2;
         private const int spawnAttack = 3;
-        private const float bulletTravelTime = 4f;
+        private const float bulletTravelTime = 2f;
 
         // VARIABLES
         private bool bulletIsOrange;
@@ -35,28 +35,23 @@ public class Gunship_Shoot : MonoBehaviour
         private int pinkCounter;
         private GameObject laser1;
         private GameObject laser2;
+        private AudioManager audioManager;
 
     void Start()
     {
-      /*  if (gameObject.tag == "O_Enemy")                                                                               // Checks the tag of the gameobject to determine if we need orange or pink bullets
-        {
-            bulletIsOrange = true;
-        }
-        else
-        {
-            bulletIsOrange = false;
-        }*/
         bulletIsOrange = true;
         orangeCounter = 0;
         pinkCounter = 10;
         laser1 = gameObject.transform.GetChild(11).gameObject;
         laser2 = gameObject.transform.GetChild(12).gameObject;
-
+        audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Play("Gunship_Spawn");
         StartCoroutine(Shoot());
     }
 
     IEnumerator GoldenRatioAttack()
     {
+        audioManager.Play("Gunship_GoldenRatio");
 
         while (orangeCounter <= 100 && pinkCounter <= 110)
         {
@@ -66,9 +61,7 @@ public class Gunship_Shoot : MonoBehaviour
             yield return new WaitForSeconds(0.03f);                                                                         // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to 
                                                                                                                        //   initialize and create its objects before we call on it to grab bullets.
         Quaternion bulletRotation = Quaternion.identity;                                                               //   Not doing this leads to a NullReferenceException because the pooledObjects.Count does not yet 
-                                                                                                                       //   exist in PinkEnemyBulletPooler.cs (the orange verison worked for some reason).
-        //if (bulletIsOrange)
-        //{
+
             GameObject oBullet = OrangeEnemyBulletPooler.current.GetOrangeEnemyBullet();
 
             if (oBullet == null)
@@ -82,14 +75,11 @@ public class Gunship_Shoot : MonoBehaviour
             oBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                                        // This will tell the bullet controller script how the bullet will move once shot
             oBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(orangeCounter, goldenAttack, 0f);
             oBullet.SetActive(true);                                                                                   // Activate the bullet
-        //}
-       // else
-       // {
+
             GameObject pBullet = PinkEnemyBulletPooler.current.GetPinkEnemyBullet();
 
             if (pBullet == null)
             {
-                //StartCoroutine(GoldenRatioAttack());
                 yield break;
             }
 
@@ -98,9 +88,7 @@ public class Gunship_Shoot : MonoBehaviour
             pBullet.GetComponent<EnemyBulletController>().SetEnemyType("gunship");                                        // This will tell the bullet controller script how the bullet will move once shot
             pBullet.GetComponent<EnemyBulletController>().SetEnemyCounter(pinkCounter, goldenAttack, 0f);
             pBullet.SetActive(true);                                                                                   // Activate the bullet
-     //   
         }
-
         orangeCounter = 0;
         pinkCounter = 10;
         yield break;
@@ -112,9 +100,11 @@ public class Gunship_Shoot : MonoBehaviour
         float waitTime = Random.Range(0.6f, 2.3f);
 
         orangeCounter = 0;
+        audioManager.Play("Gunship_Wall");
 
         while (orangeCounter <= 8)
         {
+            
             orangeCounter++;
 
             yield return new WaitForSeconds(0.05f);                                                                    // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to 
@@ -170,9 +160,11 @@ public class Gunship_Shoot : MonoBehaviour
 
     IEnumerator HoleInTheWallAttack()
     {
+        audioManager.Play("Gunship_Laser");
+        yield return new WaitForSeconds(1.5f);  
         anim.SetBool("Charging_Laser", true);
         yield return new WaitForSeconds(.5f);       
-        anim.SetBool("Charging_Laser", false);
+        anim.SetBool("Charging_Laser", false); 
 
         laser1.GetComponent<Laser>().controlLasers(true); //Getting the component each time may be very inefficient!
         laser2.GetComponent<Laser>().controlLasers(true);
@@ -195,6 +187,7 @@ public class Gunship_Shoot : MonoBehaviour
 
             if (extraFastWall == orangeCounter) // this is the wall which we also add the fast wall!
             {
+                audioManager.Play("Gunship_FastWall");
                 for (int i = 0; i <= 44; i++) 
                 {
                     if (extraFastWallColor == 0) // We will make the wall orange in this case
@@ -241,6 +234,8 @@ public class Gunship_Shoot : MonoBehaviour
             }
 
             int bulletGap = Random.Range(7, 14); // between 7 -> 14 we want to choose 2/3? bullets to not spawn
+
+            audioManager.Play("Gunship_Wall");
 
             for (int i = 0; i <= 22; i++) { // repeating this 15 times to produce 30 total bullets that simulate a wall of bullets, each one spaced 1.5 apart in the X direction
                 if (i != bulletGap && i != bulletGap + 1) 
@@ -300,6 +295,7 @@ public class Gunship_Shoot : MonoBehaviour
         int spawnSet = Random.Range(0, 4); // Depending on the random number, a different set of enemies will be spawned for the attack
 
         anim.SetBool("Spawning_Enemies", true);
+        audioManager.Play("Gunship_GarageOpen");
         
         switch (spawnSet)
         {
@@ -375,7 +371,10 @@ public class Gunship_Shoot : MonoBehaviour
         int[] movesLeft = {0, 1, 2, 3};
         int movesLeftLen = 4;
         int move = movesLeft[Random.Range(0, movesLeftLen)];
-
+        yield return new WaitForSeconds(0.1f);
+        audioManager.Play("Gunship_Spawn");
+        yield return new WaitForSeconds(0.1f);
+        audioManager.Play("Gunship_Spawn");
         yield return new WaitForSeconds(spawnTime); // Gives the Gunship time to play its spawning animation
         
         while (movesLeftLen > 0) // this loops forever
@@ -395,10 +394,10 @@ public class Gunship_Shoot : MonoBehaviour
                         case 4: //shoots outermost ones and goes towards inside
                         StartCoroutine(GridAttack(firePoint1));
                         StartCoroutine(GridAttack(firePoint6));
-                        yield return new WaitForSeconds(gridTotalTime);
+                        yield return new WaitForSeconds(gridTotalTime / 2);
                         StartCoroutine(GridAttack(firePoint2));
                         StartCoroutine(GridAttack(firePoint5));
-                        yield return new WaitForSeconds(gridTotalTime);
+                        yield return new WaitForSeconds(gridTotalTime / 2);
                         StartCoroutine(GridAttack(firePoint3));
                         StartCoroutine(GridAttack(firePoint4));
                         break;
@@ -406,10 +405,10 @@ public class Gunship_Shoot : MonoBehaviour
                         case 3: //shoots innermost ones and goes towards outside
                         StartCoroutine(GridAttack(firePoint3));
                         StartCoroutine(GridAttack(firePoint4));
-                        yield return new WaitForSeconds(gridTotalTime);
+                        yield return new WaitForSeconds(gridTotalTime / 2);
                         StartCoroutine(GridAttack(firePoint2));
                         StartCoroutine(GridAttack(firePoint5));
-                        yield return new WaitForSeconds(gridTotalTime);
+                        yield return new WaitForSeconds(gridTotalTime / 2);
                         StartCoroutine(GridAttack(firePoint1));
                         StartCoroutine(GridAttack(firePoint6));
                         break;

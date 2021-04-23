@@ -46,6 +46,7 @@ MonoBehaviour:
   pointsPopup: {fileID: 4745680854702049117, guid: 13a1edc0456d5a14f8868fa225cc33a5,
     type: 3}
   bulletShot: {fileID: 8300000, guid: f0b1d86c57a523a44b7fa5c9fc630024, type: 3}
+  goldenShot: {fileID: 8300000, guid: 197cf73760290bb41a7c0ee6332dbdfd, type: 3}
   pBaseEnemy: {fileID: 1384098575419272677, guid: 96733789effa67746824f5274d1a61d2,
     type: 3}
   oBaseEnemy: {fileID: 9063945410778737736, guid: 6e49768e54f609f4ebe22bc0a0ddeb0e,
@@ -54,6 +55,3 @@ MonoBehaviour:
     type: 3}
   oDiverEnemy: {fileID: 7839361480461584800, guid: d6333f3a94977794a85577e62d81c6c5,
     type: 3}
-  base1Move: {fileID: 0}
-  base2Move: {fileID: 0}
-  base3Move: {fileID: 0}

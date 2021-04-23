@@ -33,9 +33,11 @@ public class DiverEnemyMove : MonoBehaviour
         private bool isMoving;
         private Animator anim;
         private Transform[] moveSpots;
+        private AudioManager audioManager;
 
     void Start()                                                                                                       // We always start at our first waypoint, 0.
     {
+        audioManager = FindObjectOfType<AudioManager>();
         moveSpots = new Transform[1];
         isMoving = true;
         player = GameObject.FindWithTag("Player").transform;
@@ -101,6 +103,7 @@ public class DiverEnemyMove : MonoBehaviour
         yield return new WaitForSeconds(0.6f);
 
         anim.SetBool("isDiving", true);
+        audioManager.Play("Diver_Alert");
 
         yield return new WaitForSeconds(0.8f);
 

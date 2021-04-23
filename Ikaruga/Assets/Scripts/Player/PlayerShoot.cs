@@ -14,8 +14,14 @@ public class PlayerShoot : MonoBehaviour
         public Animator anim;
         public bool isPink = false;
 
+        private AudioManager audioManager;
+
+
     void Start()
     {
+        audioManager = FindObjectOfType<AudioManager>();
+        audioManager.Play("Player_BulletShot");
+        audioManager.Loop("Player_BulletShot");
         StartCoroutine(Shoot());
     }
 
@@ -44,7 +50,7 @@ public class PlayerShoot : MonoBehaviour
     IEnumerator Shoot()
     {
         Quaternion bulletRotation = Quaternion.identity;
-
+        
         if (isPink)                                                                                                    // If the ship is pink, we shoot pink bullets, otherwise we shoot orange bullets.
         {
             GameObject bullet1 = PinkPlayerBulletPooler.current.GetPinkPlayerBullet();                                 // We get new bullets from the bullet poolers for the player

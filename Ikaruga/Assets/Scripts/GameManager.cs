@@ -22,9 +22,13 @@ public class GameManager : MonoBehaviour
         
         // VARIABLES
         private int currentLevel;
+        private GameObject Gunship;
 
     void Start()
     {
+        Gunship = GameObject.Find("Gunship");
+        Gunship.SetActive(false);
+
         currentLevel = 0;
         LevelSelect();
     }
@@ -77,9 +81,70 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LevelZero()
     {
+        // Introduce the base enemy as well as its color variant
         EnemySpawn(spawnPt3, true, "base");
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(8f);
+
+        EnemySpawn(spawnPt3, false, "base");
+
+        yield return new WaitForSeconds(16f);
+
+
+        // Spawn in multiple base enemies of the same color
+        EnemySpawn(spawnPt1, true, "base");
+        EnemySpawn(spawnPt3, true, "base");
+        EnemySpawn(spawnPt5, true, "base");
+
+        yield return new WaitForSeconds(16f);
+
+        // Spawn in multiple base enemies of differing colors
+        EnemySpawn(spawnPt1, true, "base");
+        EnemySpawn(spawnPt2, false, "base");
+        EnemySpawn(spawnPt3, false, "base");
+        EnemySpawn(spawnPt4, false, "base");
+        EnemySpawn(spawnPt5, true, "base");
+
+        yield return new WaitForSeconds(16f);
+
+        // Spawn in our first diver enemies (3 of them, because they may be killed too quickly before the player is able to see what they do), all the same color
+        EnemySpawn(spawnPt1, true, "diver");
+        EnemySpawn(spawnPt3, true, "diver");
+        EnemySpawn(spawnPt5, true, "diver");
+
+        yield return new WaitForSeconds(8f);
+
+        // Spawn in 3 again but with different colors
+        EnemySpawn(spawnPt1, false, "diver");
+        EnemySpawn(spawnPt3, true, "diver");
+        EnemySpawn(spawnPt5, false, "diver");
+
+        yield return new WaitForSeconds(8f);
+
+        // Spawn in divers and base enemies with a mix of colors
+        EnemySpawn(spawnPt1, true, "base");
+        EnemySpawn(spawnPt5, false, "base");
+        EnemySpawn(spawnPt2, false, "diver");
+        EnemySpawn(spawnPt4, true, "diver");
+
+        yield return new WaitForSeconds(16f);
+
+        // Spawn in one last hoarde of all types
+        EnemySpawn(spawnPt1, false, "base");
+        EnemySpawn(spawnPt2, true, "base");
+        EnemySpawn(spawnPt3, false, "base");
+        EnemySpawn(spawnPt4, true, "base");
+        EnemySpawn(spawnPt5, false, "base");
+        EnemySpawn(spawnPt1, true, "diver");
+        EnemySpawn(spawnPt3, false, "diver");
+        EnemySpawn(spawnPt5, true, "diver");
+
+        yield return new WaitForSeconds(24f);
+
+        // Wait longer before spawning in our boss enemy!
+
+        Gunship.SetActive(true);
+/*
 
         EnemySpawn(spawnPt2, false, "base");
         EnemySpawn(spawnPt4, true, "base");
@@ -96,6 +161,8 @@ public class GameManager : MonoBehaviour
         EnemySpawn(spawnPt5, false, "diver");
 
         yield return new WaitForSeconds(3f);
+
+        Gunship.SetActive(true);*/
 
         currentLevel++;
 

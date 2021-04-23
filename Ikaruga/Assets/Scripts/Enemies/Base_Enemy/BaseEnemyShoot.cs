@@ -10,9 +10,12 @@ public class BaseEnemyShoot : MonoBehaviour
     // PRIVATE
         // VARIABLES
         private bool bulletIsOrange;
+        private AudioManager audioManager;
 
     void Start()
     {
+        audioManager = FindObjectOfType<AudioManager>();
+
         if (gameObject.tag == "O_Enemy")                                                                               // Checks the tag of the gameobject to determine if we need orange or pink bullets
         {
             bulletIsOrange = true;
@@ -28,7 +31,7 @@ public class BaseEnemyShoot : MonoBehaviour
     IEnumerator Shoot()
     {
         yield return new WaitForSeconds(0.5f);                                                                         // Since Base Enemy begins shooting immediately, we want the bullet pool to have some time to 
-                                                                                                                       //   initialize and create its objects before we call on it to grab bullets.
+        audioManager.Play("Enemy_BulletShot");                                                                                                  //   initialize and create its objects before we call on it to grab bullets.
         Quaternion bulletRotation = Quaternion.identity;                                                               //   Not doing this leads to a NullReferenceException because the pooledObjects.Count does not yet 
                                                                                                                        //   exist in PinkEnemyBulletPooler.cs (the orange verison worked for some reason).
         if (bulletIsOrange)

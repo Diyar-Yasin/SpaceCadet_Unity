@@ -34,8 +34,10 @@ public class BaseEnemyMove : MonoBehaviour
         GameObject base1 = GameObject.Find("Base_1");
         GameObject base2 = GameObject.Find("Base_2");
         GameObject base3 = GameObject.Find("Base_3");
+        GameObject base4 = GameObject.Find("Base_4");
+        GameObject base5 = GameObject.Find("Base_5");
 
-        int moveChoice = Random.Range(0, 3);
+        int moveChoice = Random.Range(0, 5);
 
         switch (moveChoice)
         {
@@ -54,6 +56,16 @@ public class BaseEnemyMove : MonoBehaviour
                 moveSpots[0] = base3.transform.GetChild(0).transform;
                 moveSpots[1] = base3.transform.GetChild(1).transform;
                 moveSpots[2] = base3.transform.GetChild(2).transform;
+                break;
+            case 3:
+                moveSpots = new Transform[2];
+                moveSpots[0] = base4.transform.GetChild(0).transform;
+                moveSpots[1] = base4.transform.GetChild(1).transform;
+                break;
+            case 4:
+                moveSpots = new Transform[2];
+                moveSpots[0] = base5.transform.GetChild(0).transform;
+                moveSpots[1] = base5.transform.GetChild(1).transform;
                 break;
             default:
                 break;
