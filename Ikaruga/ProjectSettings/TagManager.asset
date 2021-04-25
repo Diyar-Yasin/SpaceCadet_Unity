@@ -13,6 +13,8 @@ TagManager:
   - O_Player_Bullet
   - Score
   - Laser
+  - GameManager
+  - GameMusic
   layers:
   - Default
   - TransparentFX
