@@ -5,10 +5,10 @@ A 2D space bullet hell/shoot 'em up.
 Passion project, learning experience, and an attempt to emulate bullet spread patterns from games like Enter the Gungeon.
  
 ## Screenshots
-![Alt text](Controls.PNG?raw=true)
-![Alt text](Game1.PNG?raw=true)
-![Alt text](Game2.PNG?raw=true)
-![Alt text](Game3.png?raw=true)
+![Alt text](Game_Photos_&_Video/Controls.PNG?raw=true)
+![Alt text](Game_Photos_&_Video/Game1.PNG?raw=true)
+![Alt text](Game_Photos_&_Video/Game2.PNG?raw=true)
+![Alt text](Game_Photos_&_Video/Game3.png?raw=true)
 
 ## Tech/framework used
 <b>Built with</b>
