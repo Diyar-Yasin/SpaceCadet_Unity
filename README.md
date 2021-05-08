@@ -1,14 +1,13 @@
-## SpaceCadet_Unity
+## SpaceCadet_Unity &nbsp; &nbsp; &nbsp; ![Alt text](Game_Photos_&_Video/SpaceCadetIcon.png?raw=true)
 A 2D space bullet hell/shoot 'em up. Takes heavy inspiration from Ikaruga.
 
 ## Motivation
 Passion project, learning experience, and an attempt to emulate bullet spread patterns from games like Enter the Gungeon.
  
-## Screenshots
-![Alt text](Game_Photos_&_Video/Controls.PNG?raw=true)
-![Alt text](Game_Photos_&_Video/Game1.PNG?raw=true)
+## Screenshots & GIFs
 ![Alt text](Game_Photos_&_Video/Game2.PNG?raw=true)
-![Alt text](Game_Photos_&_Video/Game3.png?raw=true)
+![Alt text](Game_Photos_&_Video/GameplayGIF2.gif?raw=true)
+![Alt text](Game_Photos_&_Video/GameplayGIF3.gif?raw=true)
 
 ## Tech/framework used
 <b>Built with</b>
