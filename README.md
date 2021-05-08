@@ -1,5 +1,5 @@
 ## SpaceCadet_Unity
-A 2D space bullet hell/shoot 'em up.
+A 2D space bullet hell/shoot 'em up. Takes heavy inspiration from Ikaruga.
 
 ## Motivation
 Passion project, learning experience, and an attempt to emulate bullet spread patterns from games like Enter the Gungeon.
